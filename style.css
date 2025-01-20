@@ -1,12 +1,17 @@
 .product-showcase {
     text-align: center;
     margin: 20px 0;
+    display: flex;
+    justify-content: center; /* Centers the image horizontally */
+    align-items: center; /* Centers the image vertically if needed */
 }
 
 .product-showcase img {
-    max-width: 100%; /* Ensure image fits within the container */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 10px; /* Optional: Rounded corners for the image */
+    max-width: 90%; /* Image will not exceed the container's width */
+    max-height: 300px; /* Set a maximum height to prevent excessive scaling */
+    height: auto; /* Maintain the image's aspect ratio */
+    border-radius: 10px; /* Rounded corners for the image */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow to match container */
     border: 1px solid #ddd; /* Match container border */
+    object-fit: contain; /* Ensures the image scales properly within its box */
 }
