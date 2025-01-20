@@ -12,7 +12,7 @@
 }
 
 .product-showcase img {
-    max-width: 90%; /* Scale the image proportionally */
+    max-width: 100%; /* Scale the image proportionally */
     height: auto; /* Maintain aspect ratio */
     object-fit: cover; /* Ensure the image fills the container neatly */
     border-radius: 10px; /* Match the container's rounded corners */
