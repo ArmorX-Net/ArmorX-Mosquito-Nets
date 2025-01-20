@@ -1,17 +1,19 @@
 .product-showcase {
-    text-align: center;
-    margin: 20px 0;
-    display: flex;
-    justify-content: center; /* Centers the image horizontally */
-    align-items: center; /* Centers the image vertically if needed */
+    display: flex; /* Use Flexbox to center the image */
+    justify-content: center; /* Horizontally center the image */
+    align-items: center; /* Vertically center if needed */
+    margin: 20px 0; /* Space around the showcase */
+    height: 250px; /* Set the height of the container */
+    border: 1px solid #ddd; /* Optional: Add a border to match the design */
+    border-radius: 10px; /* Rounded corners for the container */
+    overflow: hidden; /* Prevent the image from spilling outside */
+    background-color: #ffffff; /* Optional: Add a background color for contrast */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a shadow for a polished look */
 }
 
 .product-showcase img {
-    max-width: 90%; /* Image will not exceed the container's width */
-    max-height: 300px; /* Set a maximum height to prevent excessive scaling */
-    height: auto; /* Maintain the image's aspect ratio */
-    border-radius: 10px; /* Rounded corners for the image */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow to match container */
-    border: 1px solid #ddd; /* Match container border */
-    object-fit: contain; /* Ensures the image scales properly within its box */
+    max-width: 90%; /* Scale the image proportionally */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure the image fills the container neatly */
+    border-radius: 10px; /* Match the container's rounded corners */
 }
