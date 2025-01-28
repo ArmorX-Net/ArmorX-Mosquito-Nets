@@ -136,29 +136,39 @@
 
     <!-- JavaScript for the Testimonial Slider -->
     <script>
-        const testimonialSlides = document.querySelector('.testimonial-slides');
-        const totalTestimonials = document.querySelectorAll('.testimonial').length;
-        let currentTestimonialIndex = 0;
+    const testimonialSlides = document.querySelector('.testimonial-slides');
+    const totalTestimonials = document.querySelectorAll('.testimonial').length;
+    const prevButton = document.querySelector('.prev-btn');
+    const nextButton = document.querySelector('.next-btn');
+    let currentTestimonialIndex = 0;
 
-        // Function to move to the next testimonial
-        function showNextTestimonial() {
-            currentTestimonialIndex++;
-            if (currentTestimonialIndex === totalTestimonials) {
-                // Reset to the first testimonial
-                testimonialSlides.style.transition = 'none'; // Disable transition for instant reset
-                currentTestimonialIndex = 0;
-                testimonialSlides.style.transform = 'translateX(0)';
-            } else {
-                // Slide to the next testimonial
-                testimonialSlides.style.transition = 'transform 0.8s ease-in-out';
-                testimonialSlides.style.transform = `translateX(-${currentTestimonialIndex * 100}%)`;
-            }
+    // Function to show a specific testimonial
+    function showTestimonial(index) {
+        if (index < 0) {
+            currentTestimonialIndex = totalTestimonials - 1; // Wrap to the last slide
+        } else if (index >= totalTestimonials) {
+            currentTestimonialIndex = 0; // Wrap to the first slide
+        } else {
+            currentTestimonialIndex = index;
         }
 
-        // Initialize the testimonial slider
-        window.addEventListener('DOMContentLoaded', () => {
-            setInterval(showNextTestimonial, 5000); // Change testimonial every 4 seconds
-        });
-    </script>
+        // Slide to the selected testimonial
+        testimonialSlides.style.transform = `translateX(-${currentTestimonialIndex * 100}%)`;
+    }
+
+    // Event listeners for navigation buttons
+    prevButton.addEventListener('click', () => {
+        showTestimonial(currentTestimonialIndex - 1);
+    });
+
+    nextButton.addEventListener('click', () => {
+        showTestimonial(currentTestimonialIndex + 1);
+    });
+
+    // Initialize the slider
+    window.addEventListener('DOMContentLoaded', () => {
+        showTestimonial(0); // Show the first testimonial on load
+    });
+</script>
 </body>
 </html>
