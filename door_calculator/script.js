@@ -544,7 +544,7 @@ document.getElementById('shareButton').addEventListener('click', function () {
     const shareData = {
         title: 'ArmorX Magnetic Mosquito Door Net Calculator',
         text: "Hey look what I found! Try out this amazing ArmorX calculator to get a perfect fit magnetic Mosquito Door Net protection for your home. It's super easy to use! Check it out yourself.",
-        url: 'https://armorx-net.github.io/ArmorX-Magnetic-Mosquito-DoorNets/'
+        url: 'https://armorx-net.github.io/ArmorX-Mosquito-Nets/'
     };
 
     // Check if Web Share API is supported
