@@ -130,5 +130,31 @@
             setInterval(showNextSlide, 3000); // Start auto-sliding
         });
     </script>
+    <script>
+    const testimonialSlides = document.querySelector('.testimonial-slides');
+    const totalTestimonials = document.querySelectorAll('.testimonial').length;
+    let currentTestimonialIndex = 0;
+
+    // Function to move to the next testimonial
+    function showNextTestimonial() {
+        currentTestimonialIndex++;
+        if (currentTestimonialIndex === totalTestimonials) {
+            // Reset to the first testimonial
+            testimonialSlides.style.transition = 'none'; // Disable transition for instant reset
+            currentTestimonialIndex = 0;
+            testimonialSlides.style.transform = 'translateX(0)';
+        } else {
+            // Slide to the next testimonial
+            testimonialSlides.style.transition = 'transform 0.8s ease-in-out';
+            testimonialSlides.style.transform = `translateX(-${currentTestimonialIndex * 100}%)`;
+        }
+    }
+
+    // Initialize the testimonial slider
+    window.addEventListener('DOMContentLoaded', () => {
+        setInterval(showNextTestimonial, 4000); // Change testimonial every 4 seconds
+    });
+</script>
+
 </body>
 </html>
