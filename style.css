@@ -157,7 +157,7 @@ button:hover {
 }
 
 .testimonial-section h2 {
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 20px;
     color: #333;
 }
@@ -165,36 +165,58 @@ button:hover {
 /* Testimonial Slider */
 .testimonial-slider {
     position: relative;
+    width: 100%;
+    max-width: 350px; /* Match the width of the image slider */
+    height: 196px; /* Fixed height to match image slider */
     overflow: hidden;
-    max-width: 350px;
     margin: 0 auto;
-    height: 120px; /* Adjust height to fit testimonials */
+    border-radius: 10px;
+    background-color: #ffffff; /* White background for testimonials */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Testimonial Slides */
 .testimonial-slides {
     display: flex;
     transition: transform 0.8s ease-in-out;
-    width: calc(100% * 5); /* Adjust based on the number of testimonials */
+    width: calc(100% * 5); /* 5 testimonials */
+    height: 100%;
 }
 
+/* Individual Testimonial */
 .testimonial {
     width: 100%;
     flex-shrink: 0;
-    text-align: center;
-    padding: 10px 15px;
+    padding: 20px;
     box-sizing: border-box;
-}
-
-.testimonial p {
-    font-size: 14px;
-    color: #555;
-    margin: 5px 0;
-    line-height: 1.5;
+    text-align: left; /* Align text to the left for professionalism */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Stars */
-.testimonial p:first-child {
-    font-size: 16px;
+.testimonial .stars {
+    font-size: 18px;
     color: #ffc107; /* Gold stars */
+    margin-bottom: 10px;
+}
+
+/* Testimonial Message */
+.testimonial .message {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    text-align: center; /* Center the message for readability */
+}
+
+/* Author Name */
+.testimonial .author {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
 }
 
