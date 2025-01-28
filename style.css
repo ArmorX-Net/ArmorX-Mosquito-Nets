@@ -178,7 +178,7 @@ button:hover {
 /* Testimonial Slides */
 .testimonial-slides {
     display: flex;
-    transition: transform 0.8s ease-in-out;
+    transition: transform 0.9s ease-in-out;
     width: calc(100% * 5); /* 5 testimonials */
     height: 100%;
 }
