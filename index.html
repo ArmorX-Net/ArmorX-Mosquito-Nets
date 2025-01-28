@@ -50,18 +50,31 @@
     </div>
 
     <script>
-        // Select the slides container
-        const slides = document.querySelector('.slides');
-        let currentIndex = 0; // Start with the first slide
+    const slides = document.querySelector('.slides');
+    const totalSlides = document.querySelectorAll('.slides img').length;
+    let currentIndex = 0; // Start with the first slide
+    const slideWidth = 100; // Each slide takes up 100% of the width
+    const transitionTime = 500; // Transition time in milliseconds
+    const delayBetweenSlides = 3000; // Delay between slides in milliseconds
 
-        // Function to move to the next slide
-        function showNextSlide() {
-            currentIndex = (currentIndex + 1) % 3; // Cycle between 0, 1, 2
-            slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+    // Function to move to the next slide
+    function showNextSlide() {
+        currentIndex++; // Move to the next slide
+        if (currentIndex === totalSlides) {
+            // If it's the last slide, reset to the first slide
+            slides.style.transition = 'none'; // Disable transition for instant reset
+            currentIndex = 0;
+            slides.style.transform = `translateX(0)`;
+        } else {
+            // Otherwise, slide to the next image
+            slides.style.transition = `transform ${transitionTime}ms ease-in-out`;
+            slides.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
         }
+    }
 
-        // Auto-slide every 3 seconds
-        setInterval(showNextSlide, 3000);
-    </script>
+    // Start the slider
+    setInterval(showNextSlide, delayBetweenSlides + transitionTime);
+</script>
+
 </body>
 </html>
