@@ -53,13 +53,20 @@
     const slides = document.querySelector('.slides');
     const totalSlides = document.querySelectorAll('.slides img').length;
     let currentIndex = 0; // Start at the first slide
+    const slideWidth = slides.parentElement.offsetWidth; // Get the width of the slider container
+
+    // Function to set the initial slider position
+    function initializeSlider() {
+        slides.style.transform = `translateX(0)`; // Set the first slide to start at the correct position
+        slides.style.transition = 'transform 0.8s ease-in-out'; // Enable smooth transitions
+    }
 
     // Function to move to the next slide
     function showNextSlide() {
         currentIndex++;
         if (currentIndex === totalSlides) {
             // Reset to the first slide after the last slide
-            slides.style.transition = 'none'; // Remove transition for instant reset
+            slides.style.transition = 'none'; // Disable transition for instant reset
             slides.style.transform = 'translateX(0)'; // Reset to the first slide
             currentIndex = 0;
 
@@ -69,14 +76,8 @@
             }, 100);
         } else {
             // Slide to the next image
-            slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+            slides.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
         }
-    }
-
-    // Ensure the first slide is displayed on page load
-    function initializeSlider() {
-        slides.style.transform = `translateX(0)`; // Position the first image at the start
-        slides.style.transition = 'transform 0.8s ease-in-out'; // Enable smooth transitions
     }
 
     // Initialize the slider on page load
