@@ -116,3 +116,31 @@ button:hover {
         padding: 10px;
     }
 }
+/* Slider Container */
+.product-showcase-slider {
+    position: relative;
+    width: 100%;
+    max-width: 350px; /* Match the container width */
+    height: 250px; /* Fixed height for the slider */
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+/* Slides Container */
+.slides {
+    display: flex;
+    width: 300%; /* 3 slides, each takes up 100% */
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Individual Slide Images */
+.slides img {
+    width: 100%; /* Each image takes up full container width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensures the image fits neatly */
+    flex-shrink: 0; /* Prevent shrinking */
+}
