@@ -120,7 +120,7 @@ button:hover {
 .product-showcase-slider {
     position: relative;
     width: 100%;
-    max-width: 350px;
+    max-width: 350px; /* Match container width */
     height: 196px; /* Fixed height for 16:9 aspect ratio */
     overflow: hidden;
     border-radius: 10px;
@@ -133,7 +133,8 @@ button:hover {
 /* Slides Container */
 .slides {
     display: flex;
-    width: calc(100% * 3); /* 3 slides, each takes 100% of the container */
+    transition: transform 0.8s ease-in-out; /* Smooth sliding effect */
+    width: 300%; /* 3 slides, each taking up 100% of the container width */
     height: 100%;
 }
 
@@ -141,8 +142,6 @@ button:hover {
 .slides img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain; /* Ensure the full image is visible */
     flex-shrink: 0;
-    background-color: #ffffff;
 }
-
