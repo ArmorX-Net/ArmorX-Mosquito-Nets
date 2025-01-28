@@ -50,5 +50,20 @@
             <p>ARMORX TOP RATED MOSQUITO NETS.</p>
         </div>
     </div>
+    <script>
+    // Select the slides container
+    const slides = document.querySelector('.slides');
+    let currentIndex = 0; // Start with the first slide
+
+    // Function to move to the next slide
+    function showNextSlide() {
+        currentIndex = (currentIndex + 1) % 3; // Cycle between 0, 1, 2
+        slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    // Auto-slide every 3 seconds
+    setInterval(showNextSlide, 3000);
+</script>
+
 </body>
 </html>
