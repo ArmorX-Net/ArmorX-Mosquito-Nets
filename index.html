@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArmorX Mosquito Nets</title>
-    <link rel="stylesheet" href="style.css"> <!-- Pointer to CSS style file -->
+    <link rel="stylesheet" href="style.css"> <!-- Link to the CSS file -->
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="ArmorX Mosquito Nets" />
@@ -24,7 +24,7 @@
         <h2>Welcome to ArmorX Mosquito Nets</h2>
         <p>Select the type of mosquito net you need:</p>
 
-        <!-- Product Showcase Image -->
+        <!-- Image Slider Section -->
         <div class="product-showcase-slider">
             <div class="slides">
                 <img src="https://i.postimg.cc/prnYbqDm/Happy-Family-ARMORX.jpg" alt="Happy Family with ARMORX">
@@ -49,43 +49,46 @@
         </div>
     </div>
 
+    <!-- JavaScript for the Slider -->
     <script>
-    const slides = document.querySelector('.slides');
-    const totalSlides = document.querySelectorAll('.slides img').length;
-    let currentIndex = 0; // Start at the first slide
-    const slideWidth = slides.parentElement.offsetWidth; // Get the width of the slider container
+        const slides = document.querySelector('.slides');
+        const slideImages = document.querySelectorAll('.slides img');
+        const totalSlides = slideImages.length;
+        let currentIndex = 0; // Start at the first slide
 
-    // Function to set the initial slider position
-    function initializeSlider() {
-        slides.style.transform = `translateX(0)`; // Set the first slide to start at the correct position
-        slides.style.transition = 'transform 0.8s ease-in-out'; // Enable smooth transitions
-    }
+        // Set the width of the slides container dynamically
+        slides.style.width = `${totalSlides * 100}%`;
 
-    // Function to move to the next slide
-    function showNextSlide() {
-        currentIndex++;
-        if (currentIndex === totalSlides) {
-            // Reset to the first slide after the last slide
-            slides.style.transition = 'none'; // Disable transition for instant reset
-            slides.style.transform = 'translateX(0)'; // Reset to the first slide
-            currentIndex = 0;
+        // Set each image to occupy an equal part of the slides container
+        slideImages.forEach(image => {
+            image.style.width = `${100 / totalSlides}%`;
+        });
 
-            // Re-enable transition for the next slides
-            setTimeout(() => {
+        // Function to move to the next slide
+        function showNextSlide() {
+            currentIndex++;
+            if (currentIndex === totalSlides) {
+                // Reset to the first slide after the last slide
+                slides.style.transition = 'none'; // Disable transition for instant reset
+                currentIndex = 0;
+                slides.style.transform = `translateX(0)`;
+
+                // Re-enable transition for the next slides
+                setTimeout(() => {
+                    slides.style.transition = 'transform 0.8s ease-in-out';
+                }, 100);
+            } else {
+                // Slide to the next image
                 slides.style.transition = 'transform 0.8s ease-in-out';
-            }, 100);
-        } else {
-            // Slide to the next image
-            slides.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+                slides.style.transform = `translateX(-${currentIndex * 100 / totalSlides}%)`;
+            }
         }
-    }
 
-    // Initialize the slider on page load
-    window.addEventListener('DOMContentLoaded', () => {
-        initializeSlider();
-        setInterval(showNextSlide, 3000); // Start auto-sliding
-    });
-</script>
-
+        // Initialize the slider on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            slides.style.transform = `translateX(0)`; // Ensure the first image is centered
+            setInterval(showNextSlide, 3000); // Start auto-sliding
+        });
+    </script>
 </body>
 </html>
