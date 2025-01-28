@@ -116,12 +116,13 @@ button:hover {
         padding: 10px;
     }
 }
-/* Slider Container */
+/* Slider Container (16:9 Aspect Ratio) */
 .product-showcase-slider {
     position: relative;
     width: 100%;
     max-width: 350px; /* Match the container width */
-    height: 250px; /* Fixed height for the slider */
+    height: 0; /* Set height dynamically */
+    padding-top: 56.25%; /* 16:9 aspect ratio (9/16 = 0.5625 * 100) */
     overflow: hidden;
     border-radius: 10px;
     margin: 20px 0;
@@ -139,8 +140,9 @@ button:hover {
 
 /* Individual Slide Images */
 .slides img {
-    width: 100%; /* Each image takes up full container width */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: cover; /* Ensures the image fits neatly */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image fits neatly without distortion */
     flex-shrink: 0; /* Prevent shrinking */
 }
+
