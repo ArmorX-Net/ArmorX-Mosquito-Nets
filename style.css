@@ -133,9 +133,9 @@ button:hover {
 /* Slides Container */
 .slides {
     display: flex;
-    transition: transform 0.8s ease-in-out; /* Smooth sliding effect */
-    width: 300%; /* 3 slides, each taking up 100% of the container width */
+    width: calc(100% * 3); /* 3 slides, each taking up 100% of the container width */
     height: 100%;
+    transition: transform 0.8s ease-in-out; /* Smooth sliding effect */
 }
 
 /* Individual Slide Images */
