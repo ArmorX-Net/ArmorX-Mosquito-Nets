@@ -547,7 +547,7 @@ document.getElementById('shareButton').addEventListener('click', function () {
     const shareData = {
         title: 'ArmorX Window Mosquito Net Calculator',
         text: "Hey look what I found! Try out this amazing ArmorX calculator to get a perfect customize fit *Window Mosquito Net* protection for your home. It's so easy to use! Check it out yourself.",
-        url: 'https://armorx-net.github.io/ArmorX-Mosquito-Net-Calculator/'
+        url: 'https://armorx-net.github.io/ArmorX-Mosquito-Nets/'
     };
 
     // Check if Web Share API is supported
