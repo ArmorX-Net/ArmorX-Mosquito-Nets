@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArmorX Mosquito Nets</title>
     <link rel="stylesheet" href="style.css"> <!-- Pointer to CSS style file -->
-    
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="ArmorX Mosquito Nets" />
@@ -27,13 +26,12 @@
 
         <!-- Product Showcase Image -->
         <div class="product-showcase-slider">
-    <div class="slides">
-        <img src="https://i.postimg.cc/prnYbqDm/Happy-Family-ARMORX.jpg" alt="Happy Family with ARMORX">
-        <img src="https://i.postimg.cc/VsXYvR5x/Armor-X-Window-Mosquito-Net.png" alt="ArmorX Window Mosquito Net">
-        <img src="https://i.postimg.cc/pLLx0Mkv/Armor-X-Magnetic-Door-Mosquito-Net.png" alt="ArmorX Magnetic Door Mosquito Net">
-    </div>
-</div>
-
+            <div class="slides">
+                <img src="https://i.postimg.cc/prnYbqDm/Happy-Family-ARMORX.jpg" alt="Happy Family with ARMORX">
+                <img src="https://i.postimg.cc/VsXYvR5x/Armor-X-Window-Mosquito-Net.png" alt="ArmorX Window Mosquito Net">
+                <img src="https://i.postimg.cc/pLLx0Mkv/Armor-X-Magnetic-Door-Mosquito-Net.png" alt="ArmorX Magnetic Door Mosquito Net">
+            </div>
+        </div>
 
         <!-- Selector Buttons -->
         <div class="selector-buttons">
@@ -50,20 +48,20 @@
             <p>ARMORX TOP RATED MOSQUITO NETS.</p>
         </div>
     </div>
+
     <script>
-    // Select the slides container
-    const slides = document.querySelector('.slides');
-    let currentIndex = 0; // Start with the first slide
+        // Select the slides container
+        const slides = document.querySelector('.slides');
+        let currentIndex = 0; // Start with the first slide
 
-    // Function to move to the next slide
-    function showNextSlide() {
-        currentIndex = (currentIndex + 1) % 3; // Cycle between 0, 1, 2
-        slides.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }
+        // Function to move to the next slide
+        function showNextSlide() {
+            currentIndex = (currentIndex + 1) % 3; // Cycle between 0, 1, 2
+            slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
 
-    // Auto-slide every 3 seconds
-    setInterval(showNextSlide, 3000);
-</script>
-
+        // Auto-slide every 3 seconds
+        setInterval(showNextSlide, 3000);
+    </script>
 </body>
 </html>
