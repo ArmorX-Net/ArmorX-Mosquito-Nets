@@ -50,44 +50,48 @@
             <p>ARMORX TOP RATED MOSQUITO NETS.</p>
         </div>
 
-        <!-- Testimonial Section -->
-<div class="testimonial-section">
-    <h2>What are Happy Customers Saying About ArmorX Nets?</h2>
+       <!-- Testimonial Section -->
+<div class="testimonial-container">
+    <h2 class="testimonial-heading">What Are Happy Customers Saying About ArmorX Nets?</h2>
+    
     <div class="testimonial-slider">
-        <div class="testimonial-slides">
-            <!-- Testimonial 1 -->
-            <div class="testimonial">
-                <p class="stars">⭐⭐⭐⭐⭐</p>
-                <p class="message">"ArmorX nets have been a lifesaver! No more mosquitoes, and my kids sleep peacefully. Highly recommended!"</p>
-                <p class="author">- Priya Sharma</p>
-            </div>
-            <!-- Testimonial 2 -->
-            <div class="testimonial">
-                <p class="stars">⭐⭐⭐⭐⭐</p>
-                <p class="message">"The quality of these nets is unmatched. Installation was super easy, and the team was very professional."</p>
-                <p class="author">- Ramesh Gupta</p>
-            </div>
-            <!-- Testimonial 3 -->
-            <div class="testimonial">
-                <p class="stars">⭐⭐⭐⭐⭐</p>
-                <p class="message">"I've used other brands before, but ArmorX stands out. Durable, stylish, and worth every penny."</p>
-                <p class="author">- Sneha Iyer</p>
-            </div>
-            <!-- Testimonial 4 -->
-            <div class="testimonial">
-                <p class="stars">⭐⭐⭐⭐⭐</p>
-                <p class="message">"I’m so impressed with how these nets blend into my home decor. Functional and beautiful!"</p>
-                <p class="author">- Amit Joshi</p>
-            </div>
-            <!-- Testimonial 5 -->
-            <div class="testimonial">
-                <p class="stars">⭐⭐⭐⭐⭐</p>
-                <p class="message">"The best investment I’ve made for my home. No more sleepless nights, and it’s easy to clean."</p>
-                <p class="author">- Anjali Verma</p>
+        <button class="prev-btn">❮</button>
+        
+        <div class="testimonial-wrapper">
+            <div class="testimonial-slides">
+                <!-- Testimonial 1 -->
+                <div class="testimonial">
+                    <p class="stars">⭐⭐⭐⭐⭐</p>
+                    <p class="message">"ArmorX nets have been a lifesaver! No more mosquitoes, and my kids sleep peacefully. Highly recommended!"</p>
+                    <p class="author">- Priya Sharma</p>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="testimonial">
+                    <p class="stars">⭐⭐⭐⭐⭐</p>
+                    <p class="message">"The quality of these nets is unmatched. Installation was super easy, and the team was very professional."</p>
+                    <p class="author">- Ramesh Gupta</p>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="testimonial">
+                    <p class="stars">⭐⭐⭐⭐⭐</p>
+                    <p class="message">"I've used other brands before, but ArmorX stands out. Durable, stylish, and worth every penny."</p>
+                    <p class="author">- Sneha Iyer</p>
+                </div>
+                <!-- Testimonial 4 -->
+                <div class="testimonial">
+                    <p class="stars">⭐⭐⭐⭐⭐</p>
+                    <p class="message">"I’m so impressed with how these nets blend into my home decor. Functional and beautiful!"</p>
+                    <p class="author">- Amit Joshi</p>
+                </div>
+                <!-- Testimonial 5 -->
+                <div class="testimonial">
+                    <p class="stars">⭐⭐⭐⭐⭐</p>
+                    <p class="message">"The best investment I’ve made for my home. No more sleepless nights, and it’s easy to clean."</p>
+                    <p class="author">- Anjali Verma</p>
+                </div>
             </div>
         </div>
-        <!-- Navigation Buttons -->
-        <button class="prev-btn">❮</button>
+
         <button class="next-btn">❯</button>
     </div>
 </div>
@@ -135,40 +139,31 @@
     </script>
 
     <!-- JavaScript for the Testimonial Slider -->
-    <script>
+   <script>
     const testimonialSlides = document.querySelector('.testimonial-slides');
     const totalTestimonials = document.querySelectorAll('.testimonial').length;
     const prevButton = document.querySelector('.prev-btn');
     const nextButton = document.querySelector('.next-btn');
     let currentTestimonialIndex = 0;
 
-    // Function to show a specific testimonial
+    // Function to Show Testimonial
     function showTestimonial(index) {
         if (index < 0) {
-            currentTestimonialIndex = totalTestimonials - 1; // Wrap to the last slide
+            currentTestimonialIndex = totalTestimonials - 1;
         } else if (index >= totalTestimonials) {
-            currentTestimonialIndex = 0; // Wrap to the first slide
+            currentTestimonialIndex = 0;
         } else {
             currentTestimonialIndex = index;
         }
-
-        // Slide to the selected testimonial
         testimonialSlides.style.transform = `translateX(-${currentTestimonialIndex * 100}%)`;
     }
 
-    // Event listeners for navigation buttons
-    prevButton.addEventListener('click', () => {
-        showTestimonial(currentTestimonialIndex - 1);
-    });
+    // Button Listeners
+    prevButton.addEventListener('click', () => showTestimonial(currentTestimonialIndex - 1));
+    nextButton.addEventListener('click', () => showTestimonial(currentTestimonialIndex + 1));
 
-    nextButton.addEventListener('click', () => {
-        showTestimonial(currentTestimonialIndex + 1);
-    });
-
-    // Initialize the slider
-    window.addEventListener('DOMContentLoaded', () => {
-        showTestimonial(0); // Show the first testimonial on load
-    });
+    // Show First Testimonial on Load
+    window.addEventListener('DOMContentLoaded', () => showTestimonial(0));
 </script>
 </body>
 </html>
