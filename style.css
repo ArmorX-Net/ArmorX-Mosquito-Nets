@@ -151,12 +151,12 @@ button:hover {
 .testimonial-container {
     text-align: center;
     background-color: #ffffff;
-    padding: 20px;
+    padding: 25px;
     border-radius: 10px;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-top: 30px;
-    max-width: 350px; /* SAME AS IMAGE SLIDER */
+    max-width: 350px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -174,8 +174,8 @@ button:hover {
     position: relative;
     overflow: hidden;
     width: 100%;
-    max-width: 350px; /* SAME WIDTH AS IMAGE SLIDER */
-    height: 200px; /* Increased height for better text visibility */
+    max-width: 350px;
+    height: 220px; /* Adjust height for readability */
     border-radius: 10px;
     margin: auto;
 }
@@ -190,9 +190,8 @@ button:hover {
 /* Testimonial Slides */
 .testimonial-slides {
     display: flex;
-    transition: transform 0.8s ease-in-out;
-    width: 500%;
-    height: 100%;
+    transition: transform 0.5s ease-in-out;
+    width: 500%; /* Adjust based on the number of testimonials */
 }
 
 /* Individual Testimonial */
@@ -203,7 +202,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 15px 20px;
+    padding: 20px;
     background: #f9f9f9;
     border-radius: 10px;
     border: 1px solid #ddd;
@@ -221,21 +220,20 @@ button:hover {
 
 /* Testimonial Message */
 .testimonial .message {
-    font-size: 15px;
-    color: #555;
+    font-size: 16px;
+    color: #333;
     line-height: 1.6;
-    padding: 0 20px;
+    padding: 0 15px;
     text-align: center;
     word-wrap: break-word;
     max-width: 90%;
-    white-space: normal;
 }
 
 /* Author Name */
 .testimonial .author {
     font-size: 14px;
     font-weight: bold;
-    color: #333;
+    color: #444;
     margin-top: 10px;
 }
 
@@ -244,7 +242,7 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
-    font-size: 20px;
+    font-size: 22px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -258,9 +256,9 @@ button:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.prev-btn { left: 10px; }
-.next-btn { right: 10px; }
+.prev-btn { left: -15px; }
+.next-btn { right: -15px; }
 
 .prev-btn:hover, .next-btn:hover {
     background-color: rgba(0, 0, 0, 0.8);
-}
+} 
