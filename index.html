@@ -136,45 +136,54 @@
 
     <!-- JavaScript for the Testimonial Slider -->
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const testimonialWrapper = document.querySelector('.testimonial-wrapper');
     const testimonialSlides = document.querySelector('.testimonial-slides');
-    const totalTestimonials = document.querySelectorAll('.testimonial').length;
+    const testimonials = document.querySelectorAll('.testimonial');
     const prevButton = document.querySelector('.prev-btn');
     const nextButton = document.querySelector('.next-btn');
-    let currentTestimonialIndex = 0;
-    let isTransitioning = false;
 
-    // ✅ FIX: Ensures the first testimonial is centered on page load
-    function initializeSlider() {
-        testimonialSlides.style.transform = `translateX(0%)`; // Start at the first testimonial
-    }
+    let index = 0;
+    let total = testimonials.length;
+    let autoSlide;
 
-    // ✅ FIX: Adjusts the slider to keep testimonials centered properly
-    function showTestimonial(index) {
-        if (isTransitioning) return; // Prevent rapid clicks
-        isTransitioning = true;
+    // Set the correct width for the slider
+    const slideWidth = testimonialWrapper.clientWidth;
+    testimonialSlides.style.width = `${total * slideWidth}px`;
+    testimonials.forEach(slide => slide.style.width = `${slideWidth}px`);
 
-        if (index < 0) {
-            currentTestimonialIndex = totalTestimonials - 1;
-        } else if (index >= totalTestimonials) {
-            currentTestimonialIndex = 0;
+    function showTestimonial(i) {
+        if (i < 0) {
+            index = total - 1;
+        } else if (i >= total) {
+            index = 0;
         } else {
-            currentTestimonialIndex = index;
+            index = i;
         }
 
-        testimonialSlides.style.transform = `translateX(-${currentTestimonialIndex * 100}%)`;
-
-        setTimeout(() => { isTransitioning = false; }, 800); // Allow transition to finish
+        testimonialSlides.style.transition = "transform 0.5s ease-in-out";
+        testimonialSlides.style.transform = `translateX(-${index * slideWidth}px)`;
+        resetAutoSlide();
     }
 
-    // ✅ Ensure the first testimonial is centered on page load
-    window.addEventListener('DOMContentLoaded', () => {
-        initializeSlider();
+    function resetAutoSlide() {
+        clearInterval(autoSlide);
+        autoSlide = setInterval(() => showTestimonial(index + 1), 5000);
+    }
+
+    prevButton.addEventListener('click', () => showTestimonial(index - 1));
+    nextButton.addEventListener('click', () => showTestimonial(index + 1));
+
+    // Initialize with the correct position on page load
+    window.addEventListener("resize", () => {
+        const newSlideWidth = testimonialWrapper.clientWidth;
+        testimonialSlides.style.width = `${total * newSlideWidth}px`;
+        testimonials.forEach(slide => slide.style.width = `${newSlideWidth}px`);
+        testimonialSlides.style.transform = `translateX(-${index * newSlideWidth}px)`;
     });
 
-    // ✅ Manual button navigation (Next/Prev)
-    prevButton.addEventListener('click', () => showTestimonial(currentTestimonialIndex - 1));
-    nextButton.addEventListener('click', () => showTestimonial(currentTestimonialIndex + 1));
+    resetAutoSlide(); // Start auto-sliding
+});
 </script>
-
 </body>
 </html>
