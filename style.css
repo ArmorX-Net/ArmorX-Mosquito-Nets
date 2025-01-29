@@ -147,6 +147,7 @@ button:hover {
 }
 
 /* Testimonial Section Container */
+/* Testimonial Section (Same as Image Slider) */
 .testimonial-container {
     text-align: center;
     background-color: #ffffff;
@@ -155,7 +156,7 @@ button:hover {
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-top: 30px;
-    max-width: 350px;
+    max-width: 350px; /* SAME AS IMAGE SLIDER */
     margin-left: auto;
     margin-right: auto;
 }
@@ -176,12 +177,15 @@ button:hover {
     position: relative;
     overflow: hidden;
     max-width: 100%;
+    height: 196px; /* SAME HEIGHT AS IMAGE SLIDER */
+    border-radius: 10px;
 }
 
 /* Testimonial Wrapper */
 .testimonial-wrapper {
     overflow: hidden;
-    width: 80%;
+    width: 100%;
+    height: 100%;
 }
 
 /* Testimonial Slides */
@@ -189,29 +193,31 @@ button:hover {
     display: flex;
     transition: transform 0.6s ease-in-out;
     width: 500%;
+    height: 100%;
 }
 
-/* Individual Testimonial */
+/* Individual Testimonial (Same as Image Box) */
 .testimonial {
     flex: 0 0 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 15px;
     background: #f9f9f9;
     border-radius: 10px;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    min-height: 100%; /* Match the slider height */
+    max-width: 100%;
 }
 
 /* Stars */
 .testimonial .stars {
     font-size: 18px;
     color: #ffc107; /* Gold stars */
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 /* Testimonial Message */
@@ -219,10 +225,11 @@ button:hover {
     font-size: 16px;
     color: #555;
     line-height: 1.5;
-    padding: 0 10px;
-    text-align: justify;
+    padding: 0 20px;
+    text-align: center;
     word-wrap: break-word;
-    max-width: 90%;
+    max-width: 85%;
+    white-space: normal; /* Ensures text wraps properly */
 }
 
 /* Author Name */
@@ -258,3 +265,4 @@ button:hover {
 .prev-btn:hover, .next-btn:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
+
