@@ -174,10 +174,11 @@ button:hover {
     position: relative;
     overflow: hidden;
     width: 100%;
-    max-width: 350px;
-    height: 220px; /* Ensures proper visibility */
+    max-width: 350px; /* Matches Image Slider */
+    height: 220px; /* Increased height for readability */
     border-radius: 10px;
     margin: auto;
+    background: #ffffff; /* White background to remove grey areas */
 }
 
 /* Testimonial Wrapper */
@@ -187,14 +188,15 @@ button:hover {
     height: 100%;
 }
 
-/* Testimonial Slides */
+/* Testimonial Slides (Ensure Correct Position) */
 .testimonial-slides {
     display: flex;
-    transition: transform 0.5s ease-in-out;
-    width: 100%; /* JavaScript will update this dynamically */
+    transition: transform 0.8s ease-in-out;
+    width: 500%; /* Prevent shifting left/right */
+    height: 100%;
 }
 
-/* Individual Testimonial */
+/* Individual Testimonial (Proper Alignment) */
 .testimonial {
     flex: 0 0 100%;
     display: flex;
@@ -202,15 +204,14 @@ button:hover {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 20px;
-    background: #f9f9f9;
+    padding: 15px 20px;
+    background: #ffffff; /* Ensure testimonials are visible */
     border-radius: 10px;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     min-height: 100%;
     max-width: 100%;
 }
-
 /* Stars */
 .testimonial .stars {
     font-size: 18px;
