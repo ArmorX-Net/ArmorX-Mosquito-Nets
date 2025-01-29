@@ -136,7 +136,7 @@
 
     <!-- JavaScript for the Testimonial Slider -->
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
     const testimonialWrapper = document.querySelector('.testimonial-wrapper');
     const testimonialSlides = document.querySelector('.testimonial-slides');
     const testimonials = document.querySelectorAll('.testimonial');
@@ -147,10 +147,12 @@
     let total = testimonials.length;
     let autoSlide;
 
-    // Set the correct width for the slider
-    const slideWidth = testimonialWrapper.clientWidth;
-    testimonialSlides.style.width = `${total * slideWidth}px`;
-    testimonials.forEach(slide => slide.style.width = `${slideWidth}px`);
+    // Dynamically set slide widths
+    function updateSlideWidths() {
+        const slideWidth = testimonialWrapper.clientWidth;
+        testimonialSlides.style.width = `${total * slideWidth}px`;
+        testimonials.forEach(slide => slide.style.width = `${slideWidth}px`);
+    }
 
     function showTestimonial(i) {
         if (i < 0) {
@@ -162,8 +164,15 @@
         }
 
         testimonialSlides.style.transition = "transform 0.5s ease-in-out";
-        testimonialSlides.style.transform = `translateX(-${index * slideWidth}px)`;
+        testimonialSlides.style.transform = `translateX(-${index * 100}%)`;
+
+        updateButtons();
         resetAutoSlide();
+    }
+
+    function updateButtons() {
+        prevButton.style.display = "block";
+        nextButton.style.display = "block";
     }
 
     function resetAutoSlide() {
@@ -174,15 +183,11 @@
     prevButton.addEventListener('click', () => showTestimonial(index - 1));
     nextButton.addEventListener('click', () => showTestimonial(index + 1));
 
-    // Initialize with the correct position on page load
-    window.addEventListener("resize", () => {
-        const newSlideWidth = testimonialWrapper.clientWidth;
-        testimonialSlides.style.width = `${total * newSlideWidth}px`;
-        testimonials.forEach(slide => slide.style.width = `${newSlideWidth}px`);
-        testimonialSlides.style.transform = `translateX(-${index * newSlideWidth}px)`;
-    });
+    window.addEventListener("resize", updateSlideWidths);
 
-    resetAutoSlide(); // Start auto-sliding
+    updateSlideWidths();
+    showTestimonial(0);
+    resetAutoSlide();
 });
 </script>
 </body>
