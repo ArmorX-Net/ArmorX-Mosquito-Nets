@@ -107,18 +107,47 @@ function findExactMatch(height, width, color, unit) {
     return exactMatchCm ? { match: exactMatchCm, note: null } : null;
 }
 
-// Helper: Find closest match in cm
+// Helper: Find closest match in cm with a tolerance for slight undersizing
 function findClosestMatch(height, width, color, unit) {
     const [heightCm, widthCm] = normalizeSizes(height, width, unit);
     let closestMatch = null;
     let smallestDifference = Infinity;
+    const penalty = 1000; // High penalty factor for significant undersizing
+    const tolerance = 1;  // Allow 1 cm undersize without penalty
 
-    const filteredData = sizeData.filter(size => size['Unit'] === 'Cm' && size['Color'].toUpperCase() === color);
+    const filteredData = sizeData.filter(size =>
+        size['Unit'] === 'Cm' && size['Color'].toUpperCase() === color
+    );
 
     filteredData.forEach(size => {
-        const diff1 = Math.abs(size['Height(H)'] - heightCm) + Math.abs(size['Width(W)'] - widthCm);
-        const diff2 = Math.abs(size['Height(H)'] - widthCm) + Math.abs(size['Width(W)'] - heightCm);
+        // Orientation 1 (direct): Compare candidate's Height with heightCm and Width with widthCm.
+        let diff1 = 0;
+        // Height calculation
+        if (size['Height(H)'] >= heightCm || (heightCm - size['Height(H)']) <= tolerance) {
+            diff1 += Math.max(0, size['Height(H)'] - heightCm);
+        } else {
+            diff1 += (heightCm - size['Height(H)']) * penalty;
+        }
+        // Width calculation
+        if (size['Width(W)'] >= widthCm || (widthCm - size['Width(W)']) <= tolerance) {
+            diff1 += Math.max(0, size['Width(W)'] - widthCm);
+        } else {
+            diff1 += (widthCm - size['Width(W)']) * penalty;
+        }
 
+        // Orientation 2 (swapped): Compare candidate's Height with widthCm and Width with heightCm.
+        let diff2 = 0;
+        if (size['Height(H)'] >= widthCm || (widthCm - size['Height(H)']) <= tolerance) {
+            diff2 += Math.max(0, size['Height(H)'] - widthCm);
+        } else {
+            diff2 += (widthCm - size['Height(H)']) * penalty;
+        }
+        if (size['Width(W)'] >= heightCm || (heightCm - size['Width(W)']) <= tolerance) {
+            diff2 += Math.max(0, size['Width(W)'] - heightCm);
+        } else {
+            diff2 += (heightCm - size['Width(W)']) * penalty;
+        }
+        
         const difference = Math.min(diff1, diff2);
         if (difference < smallestDifference) {
             smallestDifference = difference;
@@ -129,7 +158,7 @@ function findClosestMatch(height, width, color, unit) {
     return closestMatch
         ? {
               match: closestMatch,
-              convertedSize: `${roundToNearestHalf(heightCm)} x ${roundToNearestHalf(widthCm)} cm`,
+              convertedSize: `${roundToNearestHalf(heightCm)} x ${roundToNearestHalf(widthCm)} cm`
           }
         : null;
 }
