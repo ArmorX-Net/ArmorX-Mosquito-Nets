@@ -107,54 +107,72 @@ function findExactMatch(height, width, color, unit) {
     return exactMatchCm ? { match: exactMatchCm, note: null } : null;
 }
 
-// Helper: Find closest match in cm with a tolerance for slight undersizing
+// Helper: Find closest match in cm using independent closest-value selection,
+// while returning only data available in the JSON database.
 function findClosestMatch(height, width, color, unit) {
+    // Convert user input to centimeters.
     const [heightCm, widthCm] = normalizeSizes(height, width, unit);
-    let closestMatch = null;
-    let smallestDifference = Infinity;
-    const penalty = 1000; // High penalty factor for significant undersizing
-    const tolerance = 7;  // Allow 7 cm undersize without penalty
 
+    // Filter JSON records by Unit "Cm" and matching color.
     const filteredData = sizeData.filter(size =>
         size['Unit'] === 'Cm' && size['Color'].toUpperCase() === color
     );
 
-    filteredData.forEach(size => {
-        // Orientation 1 (direct): Compare candidate's Height with heightCm and Width with widthCm.
-        let diff1 = 0;
-        // Height calculation
-        if (size['Height(H)'] >= heightCm || (heightCm - size['Height(H)']) <= tolerance) {
-            diff1 += Math.max(0, size['Height(H)'] - heightCm);
-        } else {
-            diff1 += (heightCm - size['Height(H)']) * penalty;
-        }
-        // Width calculation
-        if (size['Width(W)'] >= widthCm || (widthCm - size['Width(W)']) <= tolerance) {
-            diff1 += Math.max(0, size['Width(W)'] - widthCm);
-        } else {
-            diff1 += (widthCm - size['Width(W)']) * penalty;
-        }
+    // Build candidate arrays from the filtered data.
+    const candidateHeights = filteredData.map(size => size['Height(H)']);
+    const candidateWidths  = filteredData.map(size => size['Width(W)']);
 
-        // Orientation 2 (swapped): Compare candidate's Height with widthCm and Width with heightCm.
-        let diff2 = 0;
-        if (size['Height(H)'] >= widthCm || (widthCm - size['Height(H)']) <= tolerance) {
-            diff2 += Math.max(0, size['Height(H)'] - widthCm);
-        } else {
-            diff2 += (widthCm - size['Height(H)']) * penalty;
-        }
-        if (size['Width(W)'] >= heightCm || (heightCm - size['Width(W)']) <= tolerance) {
-            diff2 += Math.max(0, size['Width(W)'] - heightCm);
-        } else {
-            diff2 += (heightCm - size['Width(W)']) * penalty;
-        }
-        
-        const difference = Math.min(diff1, diff2);
-        if (difference < smallestDifference) {
-            smallestDifference = difference;
-            closestMatch = size;
-        }
-    });
+    // Remove duplicates and sort the arrays.
+    const uniqueHeights = Array.from(new Set(candidateHeights)).sort((a, b) => a - b);
+    const uniqueWidths  = Array.from(new Set(candidateWidths)).sort((a, b) => a - b);
 
+    // Helper: Returns the candidate value that is closest to inputValue.
+    // In case of a tie (equal differences), returns the larger candidate.
+    function getClosest(candidateArray, inputValue) {
+        let closest = candidateArray[0];
+        let minDiff = Math.abs(candidateArray[0] - inputValue);
+        candidateArray.forEach(candidate => {
+            const diff = Math.abs(candidate - inputValue);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closest = candidate;
+            } else if (diff === minDiff && candidate > closest) {
+                closest = candidate;
+            }
+        });
+        return closest;
+    }
+
+    // Use independent selection for each dimension.
+    const chosenHeight = getClosest(uniqueHeights, heightCm);
+    const chosenWidth  = getClosest(uniqueWidths, widthCm);
+
+    // Try to find a record in filteredData that exactly matches the chosen values.
+    let closestMatch = filteredData.find(size =>
+        size['Height(H)'] === chosenHeight && size['Width(W)'] === chosenWidth
+    );
+    // If not found, try the swapped orientation.
+    if (!closestMatch) {
+        closestMatch = filteredData.find(size =>
+            size['Height(H)'] === chosenWidth && size['Width(W)'] === chosenHeight
+        );
+    }
+
+    // If no record is found using the independent approach, revert to overall difference minimization.
+    if (!closestMatch) {
+        let smallestDifference = Infinity;
+        filteredData.forEach(size => {
+            const diff1 = Math.abs(size['Height(H)'] - heightCm) + Math.abs(size['Width(W)'] - widthCm);
+            const diff2 = Math.abs(size['Height(H)'] - widthCm) + Math.abs(size['Width(W)'] - heightCm);
+            const difference = Math.min(diff1, diff2);
+            if (difference < smallestDifference) {
+                smallestDifference = difference;
+                closestMatch = size;
+            }
+        });
+    }
+
+    // Return the record from JSON (if found) along with a display string.
     return closestMatch
         ? {
               match: closestMatch,
