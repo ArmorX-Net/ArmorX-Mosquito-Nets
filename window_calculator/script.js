@@ -112,8 +112,8 @@ function findClosestMatch(height, width, color, unit) {
     const [heightCm, widthCm] = normalizeSizes(height, width, unit);
     let closestMatch = null;
     let smallestDifference = Infinity;
-    const penalty = 1000; // High penalty factor for significant undersizing
-    const tolerance = 1;  // Allow 1 cm undersize without penalty
+    const penalty = 500; // High penalty factor for significant undersizing
+    const tolerance = 2.5;  // Allow 2.5 cm undersize without penalty
 
     const filteredData = sizeData.filter(size =>
         size['Unit'] === 'Cm' && size['Color'].toUpperCase() === color
