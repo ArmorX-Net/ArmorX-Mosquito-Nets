@@ -599,7 +599,7 @@ function formatMessageForWhatsApp() {
 // Global variable holding structured order data (populate this in your calculateSizes logic)
 let orderData = []; 
 
-// --- ADMIN PANEL: Invoice Generation Functions (Updated GUI) ---
+// --- ADMIN PANEL: Invoice Generation Functions (Updated GUI with Quantity) ---
 
 // Function to create (or update) the invoice controls panel
 function generateInvoice() {
@@ -646,6 +646,22 @@ function generateInvoice() {
   discountInput.max = '100';
   invoiceContainer.appendChild(discountInput);
 
+  // Create a container for the Quantity fields (one per window)
+  let qtyContainer = document.createElement('div');
+  qtyContainer.id = 'qtyContainer';
+  qtyContainer.style.display = 'flex';
+  qtyContainer.style.flexDirection = 'column';
+  qtyContainer.style.gap = '5px';
+  qtyContainer.style.marginBottom = '10px';
+
+  // For each window in orderData, add a quantity input (default = 1)
+  orderData.forEach((item) => {
+    let qtyDiv = document.createElement('div');
+    qtyDiv.innerHTML = `Window ${item.windowNumber} Quantity: <input type="number" id="qty${item.windowNumber}" value="1" min="1" style="width:50px;">`;
+    qtyContainer.appendChild(qtyDiv);
+  });
+  invoiceContainer.appendChild(qtyContainer);
+
   // Create Generate Invoice Button (placed at the bottom)
   const generateBtn = document.createElement('button');
   generateBtn.className = 'admin-button';
@@ -669,12 +685,16 @@ function displayInvoice(priceType, discountPercent) {
 
   // Iterate over each net order stored in the global orderData array
   orderData.forEach(item => {
+    // Retrieve the quantity from the corresponding input field.
+    let qtyInput = document.getElementById(`qty${item.windowNumber}`);
+    let qty = qtyInput ? parseInt(qtyInput.value) : 1;
     // Retrieve the price from the JSON record using the selected price type.
     const price = parseFloat(item.priceRecord[priceType]);
-    totalAmount += price;
-    // Format the invoice line for this net.
+    const windowTotal = price * qty;
+    totalAmount += windowTotal;
+    // Format the invoice line for this window.
     invoiceData.push(
-      `Window ${item.windowNumber}\nSize: ${item.size}\nPrice: INR ${price}/-`
+      `Window ${item.windowNumber}\nSize: ${item.size}\nQuantity: ${qty}\nPrice: INR ${price}/- x ${qty} = INR ${windowTotal}/-`
     );
   });
 
