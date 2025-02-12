@@ -546,7 +546,7 @@ function formatMessageForWhatsApp() {
 
             // Remove unnecessary match type text after the header
             if (windowHeader.includes('Closest Match Found') || windowHeader.includes('Exact Match Found')) {
-                windowHeader = windowHeader.split(':')[0] + ':'; // Retain only "Window X:"
+                windowHeader = windowHeader.split(':')[0] + ':';
             }
 
             // Process the remaining lines for closest or exact matches
@@ -557,21 +557,22 @@ function formatMessageForWhatsApp() {
                 const colorDetail = lines.find(line => line.startsWith('- Color'));
                 const linkDetail = lines.find(line => line.startsWith('- Link'));
 
-    // Replace "Closest Size Ordered" with "Closest Size to Order"
-    let updatedClosestSizeDetail = null;
-    if (closestSizeDetail) {
-        updatedClosestSizeDetail = closestSizeDetail.replace('Closest Size Ordered', 'Closest Size to Order');
-    }
+                // Replace "Closest Size Ordered" with "Closest Size to Order"
+                let updatedClosestSizeDetail = null;
+                if (closestSizeDetail) {
+                    updatedClosestSizeDetail = closestSizeDetail.replace('Closest Size Ordered', 'Closest Size to Order');
+                }
 
-    formattedLines = [
-        windowHeader,
-        customSizeDetail,
-        customSizeInCm,
-        updatedClosestSizeDetail, // Use the updated line
-        colorDetail,
-        'CLICK HERE: To Order *Closest Size* on Amazon:',
-        linkDetail
-    ];
+                formattedLines = [
+                    windowHeader,
+                    customSizeDetail,
+                    customSizeInCm,
+                    updatedClosestSizeDetail,
+                    colorDetail,
+                    'CLICK HERE: To Order *Closest Size* on Amazon:',
+                    linkDetail,
+                    'Select Qty:  qty'
+                ];
             } else if (lines.some(line => line.includes('Exact Match Found'))) {
                 const sizeDetail = lines.find(line => line.startsWith('- Size:') || line.startsWith('- Size To Order'));
                 const colorDetail = lines.find(line => line.startsWith('- Color'));
@@ -584,11 +585,12 @@ function formatMessageForWhatsApp() {
                     sizeDetail,
                     colorDetail,
                     'CLICK HERE: To Order *Exact Size* on Amazon:',
-                    linkDetail
+                    linkDetail,
+                    'Select Qty:  qty'
                 ];
             }
 
-            return formattedLines.filter(Boolean).join('\n'); // Remove undefined or null values
+            return formattedLines.filter(Boolean).join('\n');
         }).join('\n\n');
 
         // Display the formatted message in the admin area
