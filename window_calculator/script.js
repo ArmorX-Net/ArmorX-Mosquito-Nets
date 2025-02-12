@@ -571,7 +571,7 @@ function formatMessageForWhatsApp() {
                     colorDetail,
                     'CLICK HERE: To Order *Closest Size* on Amazon:',
                     linkDetail,
-                    'Select Qty:  qty'
+                    'Select Qty: *1 qty*'
                 ];
             } else if (lines.some(line => line.includes('Exact Match Found'))) {
                 const sizeDetail = lines.find(line => line.startsWith('- Size:') || line.startsWith('- Size To Order'));
@@ -586,7 +586,7 @@ function formatMessageForWhatsApp() {
                     colorDetail,
                     'CLICK HERE: To Order *Exact Size* on Amazon:',
                     linkDetail,
-                    'Select Qty:*  qty*'
+                    'Select Qty: *1 qty*'
                 ];
             }
 
