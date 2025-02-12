@@ -51,24 +51,25 @@ h2 {
     margin-top: 20px;
 }
 
-/* Product showcase section */
-.product-showcase {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-    height: 250px; /* Adjust height for the image */
-    border-radius: 10px;
+/* Video Container */
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    height: 196px; /* Adjusted for 16:9 aspect ratio */
     overflow: hidden;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.product-showcase img {
-    max-width: 100%;
-    height: auto;
-    object-fit: cover; /* Ensures the image fits without distortion */
+/* Video Styling */
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the video covers the entire container */
 }
 
 /* Button styles */
@@ -115,33 +116,4 @@ button:hover {
         font-size: 14px;
         padding: 10px;
     }
-}
-/* Slider Container */
-.product-showcase-slider {
-    position: relative;
-    width: 100%;
-    max-width: 350px;
-    height: 196px; /* Fixed height for 16:9 aspect ratio */
-    overflow: hidden;
-    border-radius: 10px;
-    margin: 20px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;
-    background-color: #ffffff;
-}
-
-/* Slides Container */
-.slides {
-    display: flex;
-    transition: transform 0.8s ease-in-out; /* Smooth sliding effect */
-    width: calc(100% * 4); /* Adjusted for 4 images (3 + 1 duplicate) */
-    height: 100%;
-}
-
-/* Individual Slide Images */
-.slides img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Ensure the full image is visible */
-    flex-shrink: 0;
 }
