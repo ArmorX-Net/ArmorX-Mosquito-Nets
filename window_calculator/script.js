@@ -530,82 +530,76 @@ function copyAdminText() {
     }
 }
 
-// --- Admin Panel: Format Message for WhatsApp with Qty ---
-function formatMessageForWhatsAppWithQty() {
-  const adminMessageArea = document.getElementById('adminMessageArea');
-  const qtyInputs = document.querySelectorAll('input[id^="qty"]');
-  
-  // Use the dynamically calculated orderDetails
-  if (calculatedOrderDetails.length === 0) {
-      adminMessageArea.innerText = 'No calculated order details available. Please run the calculator first.';
-  } else {
-      // Generate a simplified message format for the admin panel
-      const formattedMessage = calculatedOrderDetails.map((detail, index) => {
-          const lines = detail.split('\n');
-          let windowHeader = lines[0]; // Example: "Window 1:"
-          let formattedLines = [];
-          
-          // Get the selected quantity for this window
-          const qty = qtyInputs[index] ? qtyInputs[index].value : 1;
+// Function to Format Message for WhatsApp Admin Panel
+function formatMessageForWhatsApp() {
+    const adminMessageArea = document.getElementById('adminMessageArea');
 
-          // Remove unnecessary match type text after the header
-          if (windowHeader.includes('Closest Match Found') || windowHeader.includes('Exact Match Found')) {
-              windowHeader = windowHeader.split(':')[0] + ':';
-          }
+    // Use the dynamically calculated orderDetails
+    if (calculatedOrderDetails.length === 0) {
+        adminMessageArea.innerText = 'No calculated order details available. Please run the calculator first.';
+    } else {
+        // Generate a simplified message format for the admin panel
+        const formattedMessage = calculatedOrderDetails.map((detail) => {
+            const lines = detail.split('\n');
+            let windowHeader = lines[0]; // Example: "Window 1:"
+            let formattedLines = [];
 
-          // Process the remaining lines for closest or exact matches
-          if (lines.some(line => line.includes('Closest Match Found'))) {
-              const customSizeDetail = lines.find(line => line.startsWith('- Custom Size Needed'));
-              const customSizeInCm = lines.find(line => line.startsWith('- Custom Size in Cm'));
-              const closestSizeDetail = lines.find(line => line.startsWith('- Closest Size Ordered'));
-              const colorDetail = lines.find(line => line.startsWith('- Color'));
-              const linkDetail = lines.find(line => line.startsWith('- Link'));
+            // Remove unnecessary match type text after the header
+            if (windowHeader.includes('Closest Match Found') || windowHeader.includes('Exact Match Found')) {
+                windowHeader = windowHeader.split(':')[0] + ':'; // Retain only "Window X:"
+            }
 
-              // Replace "Closest Size Ordered" with "Closest Size to Order"
-              let updatedClosestSizeDetail = null;
-              if (closestSizeDetail) {
-                  updatedClosestSizeDetail = closestSizeDetail.replace('Closest Size Ordered', 'Closest Size to Order');
-              }
+            // Process the remaining lines for closest or exact matches
+            if (lines.some(line => line.includes('Closest Match Found'))) {
+                const customSizeDetail = lines.find(line => line.startsWith('- Custom Size Needed'));
+                const customSizeInCm = lines.find(line => line.startsWith('- Custom Size in Cm'));
+                const closestSizeDetail = lines.find(line => line.startsWith('- Closest Size Ordered'));
+                const colorDetail = lines.find(line => line.startsWith('- Color'));
+                const linkDetail = lines.find(line => line.startsWith('- Link'));
 
-              formattedLines = [
-                  windowHeader,
-                  customSizeDetail + ` - ${qty} qty`,
-                  customSizeInCm,
-                  updatedClosestSizeDetail,
-                  colorDetail,
-                  'CLICK HERE: To Order *Closest Size* on Amazon:',
-                  linkDetail,
-                  `Select Qty:  *${qty} qty*`
-              ];
-          } else if (lines.some(line => line.includes('Exact Match Found'))) {
-              const sizeDetail = lines.find(line => line.startsWith('- Size:') || line.startsWith('- Size To Order'));
-              const colorDetail = lines.find(line => line.startsWith('- Color'));
-              const linkDetail = lines.find(line => line.startsWith('- Link'));
-              const originalUnitNote = lines.find(line => line.includes('(Original:')); // Find the original unit note
+    // Replace "Closest Size Ordered" with "Closest Size to Order"
+    let updatedClosestSizeDetail = null;
+    if (closestSizeDetail) {
+        updatedClosestSizeDetail = closestSizeDetail.replace('Closest Size Ordered', 'Closest Size to Order');
+    }
 
-              formattedLines = [
-                  windowHeader,
-                  originalUnitNote, // Include the original unit note, if available
-                  sizeDetail + ` - ${qty} qty`,
-                  colorDetail,
-                  'CLICK HERE: To Order *Exact Size* on Amazon:',
-                  linkDetail,
-                  `Select Qty:  *${qty} qty*`
-              ];
-          }
+    formattedLines = [
+        windowHeader,
+        customSizeDetail,
+        customSizeInCm,
+        updatedClosestSizeDetail, // Use the updated line
+        colorDetail,
+        'CLICK HERE: To Order *Closest Size* on Amazon:',
+        linkDetail
+    ];
+            } else if (lines.some(line => line.includes('Exact Match Found'))) {
+                const sizeDetail = lines.find(line => line.startsWith('- Size:') || line.startsWith('- Size To Order'));
+                const colorDetail = lines.find(line => line.startsWith('- Color'));
+                const linkDetail = lines.find(line => line.startsWith('- Link'));
+                const originalUnitNote = lines.find(line => line.includes('(Original:')); // Find the original unit note
 
-          return formattedLines.filter(Boolean).join('\n');
-      }).join('\n\n');
+                formattedLines = [
+                    windowHeader,
+                    originalUnitNote, // Include the original unit note, if available
+                    sizeDetail,
+                    colorDetail,
+                    'CLICK HERE: To Order *Exact Size* on Amazon:',
+                    linkDetail
+                ];
+            }
 
-      // Display the formatted message in the admin area
-      adminMessageArea.innerText = formattedMessage;
-  }
+            return formattedLines.filter(Boolean).join('\n'); // Remove undefined or null values
+        }).join('\n\n');
+
+        // Display the formatted message in the admin area
+        adminMessageArea.innerText = formattedMessage;
+    }
 }
 
 // Global variable holding structured order data (populate this in your calculateSizes logic)
 let orderData = []; 
 
-// --- ADMIN PANEL: Invoice Generation Functions (Updated with Qty selection) ---
+// --- ADMIN PANEL: Invoice Generation Functions (Updated GUI with Quantity) ---
 
 // Function to create (or update) the invoice controls panel
 function generateInvoice() {
@@ -680,8 +674,6 @@ function generateInvoice() {
     }
     // Generate and display the invoice using the current selections
     displayInvoice(priceSelection.value, discountInput.value);
-    // Pass selected quantities to formatMessageForWhatsApp
-    formatMessageForWhatsAppWithQty();
   });
   invoiceContainer.appendChild(generateBtn);
 }
