@@ -678,44 +678,42 @@ function generateInvoice() {
   invoiceContainer.appendChild(generateBtn);
 }
 
-// Function to calculate and display the invoice
+// Function to calculate and display the invoice with integer totals
 function displayInvoice(priceType, discountPercent) {
   let invoiceData = [];
   let totalAmount = 0;
 
   // Iterate over each net order stored in the global orderData array
   orderData.forEach(item => {
-    // Retrieve the quantity from the corresponding input field.
+    // Retrieve the quantity from the corresponding input field (default to 1 if missing)
     let qtyInput = document.getElementById(`qty${item.windowNumber}`);
     let qty = qtyInput ? parseInt(qtyInput.value) : 1;
-    // Retrieve the price from the JSON record using the selected price type.
+    // Retrieve the price from the JSON record using the selected price type
     const price = parseFloat(item.priceRecord[priceType]);
     const windowTotal = price * qty;
     totalAmount += windowTotal;
-    // Format the invoice line for this window.
+    // Format the invoice line for this window, rounding all numbers to the nearest integer
     invoiceData.push(
-      `Window ${item.windowNumber}\nSize: ${item.size}\nQuantity: ${qty}\nPrice: INR ${price}/- x ${qty} = INR ${windowTotal}/-`
+      `Window ${item.windowNumber}\nSize: ${item.size}\nQuantity: ${qty}\nPrice: INR ${Math.round(price)}/- x ${qty} = INR ${Math.round(windowTotal)}/-`
     );
   });
 
-  // Compute discount and final total
+  // Compute discount and final total, then round them to integers
   const discountAmount = (totalAmount * parseFloat(discountPercent || 0)) / 100;
   const finalAmount = totalAmount - discountAmount;
 
-  // Build the invoice message
-  let invoiceMessage = `<b>Invoice:</b>\n${invoiceData.join('\n\n')}\n\n<b>Total:</b> INR ${totalAmount.toFixed(2)}/-`;
+  let invoiceMessage = `<b>Invoice:</b>\n${invoiceData.join('\n\n')}\n\n<b>Total:</b> INR ${Math.round(totalAmount)}/-`;
   if (discountAmount > 0) {
-    invoiceMessage += `\n<b>Discount (${discountPercent}%):</b> - INR ${discountAmount.toFixed(2)}/-`;
+    invoiceMessage += `\n<b>Discount (${discountPercent}%):</b> - INR ${Math.round(discountAmount)}/-`;
   }
-  invoiceMessage += `\n<b>Final Total:</b> INR ${finalAmount.toFixed(2)}/-`;
+  invoiceMessage += `\n<b>Final Total:</b> INR ${Math.round(finalAmount)}/-`;
 
-  // Create a container for the invoice display
+  // Create a container for the invoice display and append it to the admin panel
   const invoiceDisplay = document.createElement('div');
   invoiceDisplay.id = 'invoiceDisplay';
   invoiceDisplay.style.marginTop = '20px';
   invoiceDisplay.innerHTML = `<pre>${invoiceMessage}</pre>`;
 
-  // Append the invoice display to the Admin Panel area
   const adminMessageArea = document.getElementById('adminMessageArea');
   adminMessageArea.appendChild(invoiceDisplay);
 }
