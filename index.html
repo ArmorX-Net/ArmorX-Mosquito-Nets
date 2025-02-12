@@ -26,7 +26,11 @@
 
         <!-- Video Section -->
         <div class="video-container">
-            <iframe width="100%" height="196" src="https://www.youtube.com/embed/F5CUXNagR3o?start=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <video id="background-video" autoplay loop muted>
+                <source src="https://www.dropbox.com/scl/fi/u3x8an1l7qgrtcmhd5bq0/Calculator-Home-Page-Video.mp4?rlkey=3r57q6x20fj1bmk0fctlrbm9o&st=c2l2ug83&raw=1" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button class="mute-btn" onclick="toggleMute()">🔊</button>
         </div>
 
         <!-- Selector Buttons -->
@@ -40,5 +44,21 @@
         </div>
 
     </div>
+
+    <!-- JavaScript to toggle mute -->
+    <script>
+        const video = document.getElementById('background-video');
+        const muteButton = document.querySelector('.mute-btn');
+
+        function toggleMute() {
+            if (video.muted) {
+                video.muted = false;
+                muteButton.innerText = '🔊';  // Change the button text to "Unmute"
+            } else {
+                video.muted = true;
+                muteButton.innerText = '🔇';  // Change the button text to "Mute"
+            }
+        }
+    </script>
 </body>
 </html>
