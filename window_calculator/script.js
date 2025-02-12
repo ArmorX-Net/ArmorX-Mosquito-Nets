@@ -599,7 +599,7 @@ function formatMessageForWhatsApp() {
 // Global variable holding structured order data (populate this in your calculateSizes logic)
 let orderData = []; 
 
-// --- ADMIN PANEL: Invoice Generation Functions (Updated GUI with Quantity) ---
+/ --- ADMIN PANEL: Invoice Generation Functions (Updated with Qty selection) ---
 
 // Function to create (or update) the invoice controls panel
 function generateInvoice() {
@@ -674,6 +674,8 @@ function generateInvoice() {
     }
     // Generate and display the invoice using the current selections
     displayInvoice(priceSelection.value, discountInput.value);
+    // Pass selected quantities to formatMessageForWhatsApp
+    formatMessageForWhatsAppWithQty();
   });
   invoiceContainer.appendChild(generateBtn);
 }
