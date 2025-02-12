@@ -546,7 +546,7 @@ function formatMessageForWhatsApp() {
 
             // Remove unnecessary match type text after the header
             if (windowHeader.includes('Closest Match Found') || windowHeader.includes('Exact Match Found')) {
-                windowHeader = windowHeader.split(':')[0] + ':';
+                windowHeader = windowHeader.split(':')[0] + ':';  // Keep only "Window X:"
             }
 
             // Process the remaining lines for closest or exact matches
@@ -557,11 +557,13 @@ function formatMessageForWhatsApp() {
                 const colorDetail = lines.find(line => line.startsWith('- Color'));
                 const linkDetail = lines.find(line => line.startsWith('- Link'));
 
+                // Get the window quantity from the global orderData (this stores the quantity selected by admin)
+                const windowNumber = parseInt(windowHeader.split(' ')[1]);
+                const qtyInput = document.getElementById(`qty${windowNumber}`);
+                const qty = qtyInput ? qtyInput.value : 1;
+
                 // Replace "Closest Size Ordered" with "Closest Size to Order"
-                let updatedClosestSizeDetail = null;
-                if (closestSizeDetail) {
-                    updatedClosestSizeDetail = closestSizeDetail.replace('Closest Size Ordered', 'Closest Size to Order');
-                }
+                let updatedClosestSizeDetail = closestSizeDetail ? closestSizeDetail.replace('Closest Size Ordered', 'Closest Size to Order') : null;
 
                 formattedLines = [
                     windowHeader,
@@ -571,13 +573,18 @@ function formatMessageForWhatsApp() {
                     colorDetail,
                     'CLICK HERE: To Order *Closest Size* on Amazon:',
                     linkDetail,
-                    'Select Qty: *1 qty*'
+                    `Select Qty: *${qty} qty*`  // Add the quantity selected by Admin
                 ];
             } else if (lines.some(line => line.includes('Exact Match Found'))) {
                 const sizeDetail = lines.find(line => line.startsWith('- Size:') || line.startsWith('- Size To Order'));
                 const colorDetail = lines.find(line => line.startsWith('- Color'));
                 const linkDetail = lines.find(line => line.startsWith('- Link'));
                 const originalUnitNote = lines.find(line => line.includes('(Original:')); // Find the original unit note
+
+                // Get the window quantity from the global orderData (this stores the quantity selected by admin)
+                const windowNumber = parseInt(windowHeader.split(' ')[1]);
+                const qtyInput = document.getElementById(`qty${windowNumber}`);
+                const qty = qtyInput ? qtyInput.value : 1;
 
                 formattedLines = [
                     windowHeader,
@@ -586,7 +593,7 @@ function formatMessageForWhatsApp() {
                     colorDetail,
                     'CLICK HERE: To Order *Exact Size* on Amazon:',
                     linkDetail,
-                    'Select Qty: *1 qty*'
+                    `Select Qty: *${qty} qty*`  // Add the quantity selected by Admin
                 ];
             }
 
@@ -599,7 +606,7 @@ function formatMessageForWhatsApp() {
 }
 
 // Global variable holding structured order data (populate this in your calculateSizes logic)
-let orderData = []; 
+let orderData = [];
 
 // --- ADMIN PANEL: Invoice Generation Functions (Updated GUI with Quantity) ---
 
@@ -632,7 +639,7 @@ function generateInvoice() {
   // Create Price Type Dropdown (placed on top)
   const priceSelection = document.createElement('select');
   priceSelection.id = 'priceSelection';
-  priceSelection.innerHTML = `
+  priceSelection.innerHTML = ` 
     <option value="Selling Price">Selling Price</option>
     <option value="Deal Price">Deal Price</option>
     <option value="Event Price">Event Price</option>
