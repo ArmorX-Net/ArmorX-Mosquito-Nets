@@ -586,7 +586,7 @@ function formatMessageForWhatsApp() {
                     colorDetail,
                     'CLICK HERE: To Order *Exact Size* on Amazon:',
                     linkDetail,
-                    'Select Qty:  qty'
+                    'Select Qty:*  qty*'
                 ];
             }
 
