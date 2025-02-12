@@ -74,19 +74,20 @@ video {
 /* Mute Button Styling */
 .mute-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+    bottom: 10px;  /* Position it at the bottom */
+    right: 10px;   /* Position it at the right */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     color: white;
     border: none;
-    padding: 8px 12px;
+    padding: 5px 10px;  /* Smaller padding for a more compact button */
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;  /* Smaller font size */
     border-radius: 5px;
+    z-index: 10;  /* Ensure the button is on top of the video */
 }
 
 .mute-btn:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7);  /* Slightly darker on hover */
 }
 
 /* Button styles */
