@@ -24,25 +24,24 @@
         <h2>Welcome to ArmorX Mosquito Nets</h2>
         <p>Select the type of mosquito net you need:</p>
 
-        <!-- Video Section -->
-        <div class="video-container">
-            <video id="background-video" autoplay loop muted playsinline preload="auto" poster="your_fallback_image.jpg">
-    <source src="https://www.dropbox.com/scl/fi/jyeriwfg2i0qmw2euy8kf/testing-4-5-ratio-1080x1350.mp4?rlkey=mxstmbqeb9ftrzy5hsnzqybvm&st=cvr6q1fp&raw=1" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-            <button class="mute-btn" onclick="toggleMute()">🔊</button>
-        </div>
-
         <!-- Selector Buttons -->
         <div class="selector-buttons">
             <button onclick="window.location.href='./window_calculator/index.html'">
-                ArmorX Window Mosquito Net
+                ARMORX WINDOW <br> MOSQUITO NET
             </button>
             <button onclick="window.location.href='./door_calculator/index.html'">
-                ArmorX Magnetic Door Mosquito Net
+                ARMORX MAGNETIC DOOR <br> MOSQUITO NET
             </button>
         </div>
 
+        <!-- Video Section (now at the bottom) -->
+        <div class="video-container">
+            <video id="background-video" autoplay loop muted playsinline preload="auto">
+                <source src="https://www.dropbox.com/scl/fi/jyeriwfg2i0qmw2euy8kf/testing-4-5-ratio-1080x1350.mp4?rlkey=mxstmbqeb9ftrzy5hsnzqybvm&st=cvr6q1fp&raw=1" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button class="mute-btn" onclick="toggleMute()">🔊</button>
+        </div>
     </div>
 
     <!-- JavaScript to toggle mute -->
