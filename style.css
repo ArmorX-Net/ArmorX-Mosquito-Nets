@@ -91,6 +91,37 @@ video {
     opacity: 0.7;  /* Slightly decrease opacity when hovered */
 }
 
+/* Selector Buttons Styling */
+.selector-buttons {
+    display: flex;
+    flex-direction: column;  /* Stack buttons vertically */
+    justify-content: center;  /* Vertically center buttons */
+    align-items: center;  /* Horizontally center buttons */
+    margin-top: 20px;
+    gap: 10px;  /* Add some space between buttons */
+}
+
+.selector-buttons button {
+    background-color: #a4e053;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    width: 100%;  /* Make buttons take full width of their container */
+    max-width: 330px;  /* Limit maximum width to avoid overly large buttons */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.selector-buttons button:hover {
+    background-color: #88c440;
+    transform: scale(1.05);
+}
+
 /* Button styles */
 button {
     background-color: #a4e053;
