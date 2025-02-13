@@ -168,3 +168,32 @@ button:hover {
         padding: 10px;
     }
 }
+/* General styling for the page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    position: relative; /* Needed to position icons at absolute positions */
+}
+
+/* WhatsApp Icon Styling (Right) */
+.whatsapp-icon {
+    position: absolute;
+    top: 10px; /* Adjust vertical position */
+    right: 10px; /* Position on the right */
+    width: 40px; /* Size of the icon */
+    height: auto;
+    cursor: pointer;
+    z-index: 1000; /* Ensure the icon is above other content */
+}
+
+/* Share Icon Styling (Left) */
+.share-icon {
+    position: absolute;
+    top: 10px; /* Adjust vertical position */
+    left: 10px; /* Position on the left */
+    width: 40px; /* Size of the icon */
+    height: auto;
+    cursor: pointer;
+    z-index: 1000; /* Ensure the icon is above other content */
+}
