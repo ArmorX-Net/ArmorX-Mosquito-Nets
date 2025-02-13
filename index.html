@@ -36,18 +36,23 @@
 
         <!-- Selector Buttons -->
         <div class="selector-buttons">
-            <!-- Button for ArmorX Window Mosquito Net -->
             <button onclick="window.location.href='./window_calculator/index.html'; 
                 gtag('event', 'click', { 'event_category': 'button', 'event_label': 'ARMORX WINDOW MOSQUITO NET' });">
                 ARMORX WINDOW <br> MOSQUITO NET
             </button>
-
-            <!-- Button for ArmorX Magnetic Door Mosquito Net -->
             <button onclick="window.location.href='./door_calculator/index.html'; 
                 gtag('event', 'click', { 'event_category': 'button', 'event_label': 'ARMORX MAGNETIC DOOR MOSQUITO NET' });">
                 ARMORX MAGNETIC DOOR <br> MOSQUITO NET
             </button>
         </div>
+
+        <!-- WhatsApp Icon (Right) -->
+        <a href="https://wa.me/917304692553?text=Hello%20Team%20ArmorX%2C%20I%20need%20more%20info%20on%20your%20Mosquito%20Nets.%20Can%20you%20help%3F%20Thanks%21" target="_blank">
+            <img src="https://i.postimg.cc/mk19S9bF/whatsapp.png" alt="WhatsApp" class="whatsapp-icon">
+        </a>
+
+        <!-- Share Icon (Left) -->
+        <img src="https://i.postimg.cc/VNtvmdSB/url.png" alt="Share" class="share-icon" id="shareButton">
 
         <!-- Video Section (now at the bottom) -->
         <div class="video-container">
@@ -73,6 +78,29 @@
                 muteButton.innerText = '🔇';  // Change the button text to "Mute"
             }
         }
+
+        // Share Functionality
+        document.getElementById('shareButton').addEventListener('click', function () {
+            const shareData = {
+                title: 'ArmorX Window Mosquito Net',
+                text: "Hey look what I found! Try out this amazing ArmorX Calculator to get a perfect customize fit *Window Mosquito Net* protection for your home. It's so easy to use! Check it out yourself.",
+                url: 'https://armorx-net.github.io/ArmorX-Mosquito-Net-Calculator/'
+            };
+
+            // Check if Web Share API is supported
+            if (navigator.share) {
+                navigator
+                    .share(shareData)
+                    .then(() => console.log('Shared successfully'))
+                    .catch((err) => console.error('Error sharing:', err));
+            } else {
+                // Fallback: Copy to clipboard for unsupported browsers
+                navigator.clipboard
+                    .writeText(`${shareData.text} ${shareData.url}`)
+                    .then(() => alert('Link copied to clipboard! Share it manually.'))
+                    .catch((err) => console.error('Error copying link:', err));
+            }
+        });
     </script>
 </body>
 </html>
