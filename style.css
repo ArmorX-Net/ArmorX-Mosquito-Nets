@@ -8,8 +8,10 @@ body {
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
+    position: relative; /* Needed to position icons at absolute positions */
 }
 
+/* Container styling for the main calculator */
 .container {
     width: 90%;
     max-width: 350px;
@@ -21,6 +23,7 @@ body {
     border-top: 5px solid #a4e053;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    position: relative; /* Make container the reference point for positioning icons */
 }
 
 /* Logo styling */
@@ -123,27 +126,26 @@ video {
     opacity: 0.7;  /* Slightly decrease opacity when hovered */
 }
 
-/* Button styles */
-button {
-    background-color: #a4e053;
-    color: #ffffff;
-    border: none;
+/* WhatsApp Icon Styling (Right) */
+.whatsapp-icon {
+    position: absolute;
+    top: 10px; /* Adjust vertical position */
+    right: 10px; /* Position on the right */
+    width: 40px; /* Size of the icon */
+    height: auto;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 15px;
-    padding: 12px;
-    text-transform: uppercase;
-    border-radius: 5px;
-    width: calc(100% - 20px);
-    max-width: 330px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 1000; /* Ensure the icon is above other content */
 }
 
-button:hover {
-    background-color: #88c440;
-    transform: scale(1.05);
+/* Share Icon Styling (Left) */
+.share-icon {
+    position: absolute;
+    top: 10px; /* Adjust vertical position */
+    left: 10px; /* Position on the left */
+    width: 40px; /* Size of the icon */
+    height: auto;
+    cursor: pointer;
+    z-index: 1000; /* Ensure the icon is above other content */
 }
 
 /* Responsive styles for smaller screens */
@@ -167,33 +169,4 @@ button:hover {
         font-size: 14px;
         padding: 10px;
     }
-}
-/* General styling for the page */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    position: relative; /* Needed to position icons at absolute positions */
-}
-
-/* WhatsApp Icon Styling (Right) */
-.whatsapp-icon {
-    position: absolute;
-    top: 10px; /* Adjust vertical position */
-    right: 10px; /* Position on the right */
-    width: 40px; /* Size of the icon */
-    height: auto;
-    cursor: pointer;
-    z-index: 1000; /* Ensure the icon is above other content */
-}
-
-/* Share Icon Styling (Left) */
-.share-icon {
-    position: absolute;
-    top: 10px; /* Adjust vertical position */
-    left: 10px; /* Position on the left */
-    width: 40px; /* Size of the icon */
-    height: auto;
-    cursor: pointer;
-    z-index: 1000; /* Ensure the icon is above other content */
 }
