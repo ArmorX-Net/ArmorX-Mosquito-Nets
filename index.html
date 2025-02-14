@@ -85,16 +85,17 @@
     }
 
     window.addEventListener('load', function() {
-      // If the video is already ready to play, start it.
-      if (video.readyState >= 3) { // HAVE_FUTURE_DATA
-        video.play().catch(err => console.error("Error playing video:", err));
-      } else {
-        // Otherwise, wait until it's ready.
-        video.addEventListener('canplay', function() {
-          video.play().catch(err => console.error("Error playing video on canplay:", err));
-        });
-      }
+  const video = document.getElementById('background-video');
+  if (video.readyState >= 3) {
+    video.removeAttribute('poster');
+    video.play().catch(err => console.error("Error playing video:", err));
+  } else {
+    video.addEventListener('canplay', function() {
+      video.removeAttribute('poster');
+      video.play().catch(err => console.error("Error playing video on canplay:", err));
     });
+  }
+});
 
     // Share Functionality - Attach event listener to the share icon
     document.getElementById('shareButton').addEventListener('click', function () {
