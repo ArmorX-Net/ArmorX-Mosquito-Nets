@@ -60,11 +60,11 @@
 
     <!-- Video Section (now at the bottom) -->
     <div class="video-container">
-      <video id="background-video" loop muted playsinline preload="auto"
-        poster="https://i.postimg.cc/tJF9s9P8/Calculator-Home-Page-Image.jpg">
-        <source src="https://www.dropbox.com/scl/fi/rarjfmz3xhmkbwe06pfcc/Calculator-Home-Page-480px.mp4?rlkey=746myg2zgn80czddp8tq8bh0m&st=msoow3je&raw=1" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+      <video id="background-video" autoplay loop muted playsinline preload="auto"
+  poster="https://i.postimg.cc/tJF9s9P8/Calculator-Home-Page-Image.jpg">
+  <source src="https://www.dropbox.com/scl/fi/rarjfmz3xhmkbwe06pfcc/Calculator-Home-Page-480px.mp4?rlkey=746myg2zgn80czddp8tq8bh0m&st=msoow3je&raw=1" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
       <button class="mute-btn" onclick="toggleMute()">🔊</button>
     </div>
   </div>
@@ -85,20 +85,21 @@
     }
 
     window.addEventListener('load', function() {
-      // Wait for 4 seconds before starting the video
-      setTimeout(function() {
-        const video = document.getElementById('background-video');
-        // Check if the video is ready to play
-        if (video.readyState >= 3) { // HAVE_FUTURE_DATA
-          video.play();
-        } else {
-          // Optionally, add an event listener for when the video is ready
-          video.addEventListener('canplay', function() {
-            video.play();
-          });
-        }
-      }, 4000); // 2000 milliseconds = 4 seconds
-    });
+  // Detect iOS devices
+  var isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  
+  if (!isiOS) {
+    // On non-iOS devices, wait 4 seconds before ensuring the video is playing.
+    setTimeout(function() {
+      const video = document.getElementById('background-video');
+      video.play().catch(function(error){
+         console.error("Error attempting to play video:", error);
+      });
+    }, 4000); // 4000 milliseconds = 4 seconds
+  }
+  // On iOS, autoplay (via the autoplay attribute) should work automatically.
+});
+
 
     // Share Functionality - Attach event listener to the share icon
     document.getElementById('shareButton').addEventListener('click', function () {
