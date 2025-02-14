@@ -114,8 +114,8 @@ h2 {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  z-index: 5;  /* On top of video but below controls if needed */
+  object-fit: contain; /* Changed from cover to contain */
+  z-index: 5;
   transition: opacity 0.5s ease;
 }
 
