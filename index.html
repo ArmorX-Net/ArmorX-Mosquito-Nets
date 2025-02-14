@@ -58,18 +58,18 @@
     <!-- Share Icon (Left) -->
     <img src="https://i.postimg.cc/VNtvmdSB/url.png" alt="Share" class="share-icon" id="shareButton">
 
-    <!-- Video Section (now at the bottom) -->
+    <!-- Video Section (at the bottom) -->
     <div class="video-container">
       <video id="background-video" autoplay loop muted playsinline preload="auto"
-  poster="https://i.postimg.cc/tJF9s9P8/Calculator-Home-Page-Image.jpg">
-  <source src="https://www.dropbox.com/scl/fi/rarjfmz3xhmkbwe06pfcc/Calculator-Home-Page-480px.mp4?rlkey=746myg2zgn80czddp8tq8bh0m&st=msoow3je&raw=1" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+        poster="https://i.postimg.cc/tJF9s9P8/Calculator-Home-Page-Image.jpg">
+        <source src="https://www.dropbox.com/scl/fi/rarjfmz3xhmkbwe06pfcc/Calculator-Home-Page-480px.mp4?rlkey=746myg2zgn80czddp8tq8bh0m&st=msoow3je&raw=1" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
       <button class="mute-btn" onclick="toggleMute()">🔊</button>
     </div>
   </div>
 
-  <!-- JavaScript to toggle mute and share functionality -->
+  <!-- JavaScript to toggle mute and start video when ready -->
   <script>
     const video = document.getElementById('background-video');
     const muteButton = document.querySelector('.mute-btn');
@@ -77,29 +77,24 @@
     function toggleMute() {
       if (video.muted) {
         video.muted = false;
-        muteButton.innerText = '🔊';  // Change the button text to "Unmute"
+        muteButton.innerText = '🔊';
       } else {
         video.muted = true;
-        muteButton.innerText = '🔇';  // Change the button text to "Mute"
+        muteButton.innerText = '🔇';
       }
     }
 
     window.addEventListener('load', function() {
-  // Detect iOS devices
-  var isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  
-  if (!isiOS) {
-    // On non-iOS devices, wait 4 seconds before ensuring the video is playing.
-    setTimeout(function() {
-      const video = document.getElementById('background-video');
-      video.play().catch(function(error){
-         console.error("Error attempting to play video:", error);
-      });
-    }, 4000); // 4000 milliseconds = 4 seconds
-  }
-  // On iOS, autoplay (via the autoplay attribute) should work automatically.
-});
-
+      // If the video is already ready to play, start it.
+      if (video.readyState >= 3) { // HAVE_FUTURE_DATA
+        video.play().catch(err => console.error("Error playing video:", err));
+      } else {
+        // Otherwise, wait until it's ready.
+        video.addEventListener('canplay', function() {
+          video.play().catch(err => console.error("Error playing video on canplay:", err));
+        });
+      }
+    });
 
     // Share Functionality - Attach event listener to the share icon
     document.getElementById('shareButton').addEventListener('click', function () {
@@ -109,16 +104,12 @@
         url: 'https://armorx-net.github.io/ArmorX-Mosquito-Nets/'
       };
 
-      // Check if Web Share API is supported
       if (navigator.share) {
-        navigator
-          .share(shareData)
+        navigator.share(shareData)
           .then(() => console.log('Shared successfully'))
           .catch((err) => console.error('Error sharing:', err));
       } else {
-        // Fallback: Copy to clipboard for unsupported browsers
-        navigator.clipboard
-          .writeText(`${shareData.text} ${shareData.url}`)
+        navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`)
           .then(() => alert('Link copied to clipboard! Share it manually.'))
           .catch((err) => console.error('Error copying link:', err));
       }
