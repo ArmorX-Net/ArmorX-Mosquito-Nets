@@ -60,13 +60,10 @@
 
     <!-- Video Section (at the bottom) -->
     <div class="video-container">
-      <video id="background-video" autoplay loop muted playsinline preload="metadata">
-        <source src="https://www.dropbox.com/scl/fi/dxqi6by4mgi89mypysxxx/Calculator-Home-Page-480pxH.264.mp4?rlkey=z18g1h1km3wnsyvr5narnmtgg&st=1zsgcple&raw=1
-" type="video/mp4">
+      <video id="background-video" autoplay loop muted playsinline preload="metadata" poster="https://i.postimg.cc/tJF9s9P8/Calculator-Home-Page-Image.jpg">
+        <source src="https://www.dropbox.com/scl/fi/dxqi6by4mgi89mypysxxx/Calculator-Home-Page-480pxH.264.mp4?rlkey=z18g1h1km3wnsyvr5narnmtgg&st=1zsgcple&raw=1" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-      <!-- Overlay image shown until video is ready -->
-      <img id="video-overlay" src="https://i.postimg.cc/tJF9s9P8/Calculator-Home-Page-Image.jpg" alt="Poster" class="video-overlay">
       <button class="mute-btn" onclick="toggleMute()">🔊</button>
     </div>
   </div>
@@ -75,7 +72,6 @@
   <script>
     const video = document.getElementById('background-video');
     const muteButton = document.querySelector('.mute-btn');
-    const overlay = document.getElementById('video-overlay');
 
     function toggleMute() {
       if (video.muted) {
@@ -90,16 +86,16 @@
     window.addEventListener('load', function() {
       // Wait for 4 seconds before starting the video
       setTimeout(function() {
-        // If video is ready, hide the overlay and play the video.
+        // If video is ready, hide the poster and play the video.
         if (video.readyState >= 3) {
           video.play().then(() => {
-            overlay.style.display = 'none';
+            video.removeAttribute('poster'); // Remove the poster image when the video starts playing
           }).catch(err => console.error("Error playing video:", err));
         } else {
           // Otherwise, wait until it's ready.
           video.addEventListener('canplay', function() {
             video.play().then(() => {
-              overlay.style.display = 'none';
+              video.removeAttribute('poster'); // Remove the poster image when the video starts playing
             }).catch(err => console.error("Error playing video on canplay:", err));
           });
         }
