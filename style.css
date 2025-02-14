@@ -107,18 +107,6 @@ h2 {
   object-fit: cover;
 }
 
-/* Overlay image styling */
-.video-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Changed from cover to contain */
-  z-index: 5;
-  transition: opacity 0.5s ease;
-}
-
 /* Mute Button Styling */
 .mute-btn {
     position: absolute;
