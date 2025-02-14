@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ArmorX Mosquito Nets</title>
-  <link rel="stylesheet" href="style.css"> <!-- Link to the CSS file -->
+  <link rel="stylesheet" href="style.css">
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XVQGVGC7KV"></script>
@@ -60,19 +60,21 @@
 
     <!-- Video Section (at the bottom) -->
     <div class="video-container">
-      <video id="background-video" autoplay loop muted playsinline preload="auto"
-        poster="https://i.postimg.cc/tJF9s9P8/Calculator-Home-Page-Image.jpg">
+      <video id="background-video" autoplay loop muted playsinline preload="auto">
         <source src="https://www.dropbox.com/scl/fi/rarjfmz3xhmkbwe06pfcc/Calculator-Home-Page-480px.mp4?rlkey=746myg2zgn80czddp8tq8bh0m&st=msoow3je&raw=1" type="video/mp4">
         Your browser does not support the video tag.
       </video>
+      <!-- Overlay image shown until video is ready -->
+      <img id="video-overlay" src="https://i.postimg.cc/tJF9s9P8/Calculator-Home-Page-Image.jpg" alt="Poster" class="video-overlay">
       <button class="mute-btn" onclick="toggleMute()">🔊</button>
     </div>
   </div>
 
-  <!-- JavaScript to toggle mute and start video when ready -->
+  <!-- JavaScript to toggle mute, play video when ready, and share functionality -->
   <script>
     const video = document.getElementById('background-video');
     const muteButton = document.querySelector('.mute-btn');
+    const overlay = document.getElementById('video-overlay');
 
     function toggleMute() {
       if (video.muted) {
@@ -85,19 +87,21 @@
     }
 
     window.addEventListener('load', function() {
-  const video = document.getElementById('background-video');
-  if (video.readyState >= 3) {
-    video.removeAttribute('poster');
-    video.play().catch(err => console.error("Error playing video:", err));
-  } else {
-    video.addEventListener('canplay', function() {
-      video.removeAttribute('poster');
-      video.play().catch(err => console.error("Error playing video on canplay:", err));
+      // If video is ready, hide the overlay and play the video.
+      if (video.readyState >= 3) {
+        video.play().then(() => {
+          overlay.style.display = 'none';
+        }).catch(err => console.error("Error playing video:", err));
+      } else {
+        video.addEventListener('canplay', function() {
+          video.play().then(() => {
+            overlay.style.display = 'none';
+          }).catch(err => console.error("Error playing video on canplay:", err));
+        });
+      }
     });
-  }
-});
 
-    // Share Functionality - Attach event listener to the share icon
+    // Share Functionality
     document.getElementById('shareButton').addEventListener('click', function () {
       const shareData = {
         title: 'ArmorX Mosquito Net',
