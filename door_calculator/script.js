@@ -105,21 +105,29 @@ function findExactMatch(height, width, color, unit) {
     return exactMatchCm ? { match: exactMatchCm, note: null } : null;
 }
 
-// Helper: Find closest match in cm with adjusted width rule
+// Helper: Find closest match in cm with adjusted width rule, max 4cm difference check, 
+// and standardizing user dimensions so order doesn’t matter.
 function findClosestMatch(height, width, color, unit) {
+    // Normalize user dimensions to cm.
     const [heightCm, widthCm] = normalizeSizes(height, width, unit);
-    let closestMatch = null;
-    let smallestDifference = Infinity;
+    // Standardize: treat the larger value as height and the smaller as width.
+    const userHeight = Math.max(heightCm, widthCm);
+    const userWidth  = Math.min(heightCm, widthCm);
 
-    // Filter only cm sizes that match the color
+    // Arrays to hold acceptable candidate permutations.
+    let acceptableCandidates = [];
+    let bestCandidateOverall = null;
+    let bestOverallDiff = Infinity;
+
+    // Filter candidate sizes from the JSON data (only those in cm matching the color).
     const filteredData = sizeData.filter(
         size => size['Unit'] === 'cm' && size['Color'].toUpperCase() === color
     );
 
+    // Evaluate each candidate in both dimension orders.
     filteredData.forEach(size => {
         const dim1 = size['Height(H)'];
         const dim2 = size['Width(W)'];
-        // Consider both possible assignments of dimensions
         const permutations = [
             [dim1, dim2],
             [dim2, dim1]
@@ -127,43 +135,71 @@ function findClosestMatch(height, width, color, unit) {
 
         permutations.forEach(perm => {
             const candidateHeight = perm[0];
-            const candidateWidth = perm[1];
+            const candidateWidth  = perm[1];
+            // Compute differences against the standardized user dimensions.
+            const heightDiff = Math.abs(candidateHeight - userHeight);
+            const widthDiff  = Math.abs(candidateWidth - userWidth);
+            const diff = heightDiff + widthDiff;
 
-            // Enforce the width rule:
-            // If the user's width is greater than the candidate's width by more than 1cm,
-            // then skip this permutation (i.e. force a candidate that is at least as big).
-            if (widthCm > candidateWidth && (widthCm - candidateWidth) > 1) {
-                return; // skip to next permutation
+            // Update best overall candidate (ignoring the preferred rule).
+            if (diff < bestOverallDiff) {
+                bestOverallDiff = diff;
+                bestCandidateOverall = {
+                    size: size,
+                    candidateHeight: candidateHeight,
+                    candidateWidth: candidateWidth,
+                    heightDiff: heightDiff,
+                    widthDiff: widthDiff,
+                    diff: diff
+                };
             }
 
-            // Calculate a combined difference (using absolute differences)
-            const diff = Math.abs(candidateHeight - heightCm) + Math.abs(candidateWidth - widthCm);
-            if (diff < smallestDifference) {
-                smallestDifference = diff;
-                closestMatch = size;
+            // Only consider candidates acceptable if both differences are within 4 cm.
+            if (heightDiff <= 4 && widthDiff <= 4) {
+                acceptableCandidates.push({
+                    size: size,
+                    candidateHeight: candidateHeight,
+                    candidateWidth: candidateWidth,
+                    heightDiff: heightDiff,
+                    widthDiff: widthDiff,
+                    diff: diff
+                });
             }
         });
     });
 
-    // Fallback: if no candidate met the width rule, use the original nearest-match logic.
-    if (!closestMatch) {
-        filteredData.forEach(size => {
-            const diff1 = Math.abs(size['Height(H)'] - heightCm) + Math.abs(size['Width(W)'] - widthCm);
-            const diff2 = Math.abs(size['Height(H)'] - widthCm) + Math.abs(size['Width(W)'] - heightCm);
-            const difference = Math.min(diff1, diff2);
-            if (difference < smallestDifference) {
-                smallestDifference = difference;
-                closestMatch = size;
-            }
+    // If we found at least one acceptable candidate, try to pick one based on the width rule.
+    if (acceptableCandidates.length > 0) {
+        // Preferred candidates: those with candidateWidth >= userWidth OR, if smaller,
+        // the difference is within 1 cm.
+        const preferredCandidates = acceptableCandidates.filter(cand => {
+            if (cand.candidateWidth >= userWidth) return true;
+            if ((userWidth - cand.candidateWidth) <= 1) return true;
+            return false;
         });
+        // If we have any preferred candidates, choose the one with the smallest overall diff.
+        if (preferredCandidates.length > 0) {
+            const bestPreferred = preferredCandidates.reduce((acc, cur) => 
+                cur.diff < acc.diff ? cur : acc
+            );
+            return {
+                match: bestPreferred.size,
+                convertedSize: `${roundToNearestHalf(userHeight)} x ${roundToNearestHalf(userWidth)} cm`
+            };
+        } else {
+            // Otherwise, return the best acceptable candidate even if its width is more than 1cm below the user width.
+            const bestAcceptable = acceptableCandidates.reduce((acc, cur) =>
+                cur.diff < acc.diff ? cur : acc
+            );
+            return {
+                match: bestAcceptable.size,
+                convertedSize: `${roundToNearestHalf(userHeight)} x ${roundToNearestHalf(userWidth)} cm`
+            };
+        }
     }
 
-    return closestMatch
-        ? {
-              match: closestMatch,
-              convertedSize: `${roundToNearestHalf(heightCm)} x ${roundToNearestHalf(widthCm)} cm`,
-          }
-        : null;
+    // If no candidate is acceptable (i.e. differences exceed 4cm), return null.
+    return null;
 }
 
 // Helper: Round to nearest 0.5
