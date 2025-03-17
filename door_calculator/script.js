@@ -321,7 +321,7 @@ function generateWhatsAppLink(orderDetails, isExceeded = false) {
     // Check if the size exceeds the limit and customize the message
     let message;
     if (isExceeded) {
-        message = `Hello Team ARMORX,\n\nMy Door size exceeds the standard size limit. I need help with customization. Please assist me with the following details:\n\n${orderDetails.join('\n\n')}\n\nThank you.`;
+        message = `Hello Team ARMORX,\n\nMy Door size exceeds the standard size limit. Please assist me with the following details:\n\n${orderDetails.join('\n\n')}\n\nThank you.`;
     } else {
         message = `Hello Team ARMORX,\n\nPlease make note of my order:\n\n${orderDetails.join('\n\n')}\n\nThank you.`;
     }
@@ -385,7 +385,7 @@ function calculateSizes() {
             messageArea.innerHTML += `
                 <div class="message info">
                     <h3 style="font-weight: bold; color: black;">Door ${i}</h3>
-                    <h4>SIZE LIMIT EXCEEDED: FREE Customization Available</h4>
+                    <h4>SIZE LIMIT EXCEEDED: CONTACT Team ArmorX</h4>
                     <p>Custom Size Needed (HxW): <strong>${height} x ${width} ${unit}</strong></p>
                     <p>Custom Size Needed in Cm: <strong>${roundToNearestHalf(heightCm)} x ${roundToNearestHalf(widthCm)} Cm</strong></p>
                     <p>Color: <strong>${getColorName(color)}</strong></p>
