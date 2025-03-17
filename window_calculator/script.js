@@ -701,9 +701,9 @@ function displayInvoice(priceType, discountPercent) {
     const price = parseFloat(item.priceRecord[priceType]);
     const windowTotal = price * qty;
     totalAmount += windowTotal;
-    // Format the invoice line for this window, rounding all numbers to the nearest integer
+    // Format the invoice line for this window (rounding all numbers to the nearest integer)
     invoiceData.push(
-      `Window ${item.windowNumber}\nSize: ${item.size}\nQuantity: ${qty}\nPrice: INR ${Math.round(price)}/- x ${qty} = INR ${Math.round(windowTotal)}/-`
+      `Window ${item.windowNumber}\nSize: ${item.size} - ${qty} qty\nPrice: INR ${Math.round(price)}/- x ${qty} = INR ${Math.round(windowTotal)}/-`
     );
   });
 
