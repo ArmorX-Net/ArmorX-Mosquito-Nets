@@ -159,6 +159,31 @@ h2 {
   z-index: 1000;
 }
 
+/* New Customer Support WhatsApp Icon (Bottom Right) */
+.whatsapp-icon-bottom {
+  position: absolute;
+  bottom: 10px;      /* 10px from the bottom of the container */
+  right: 10px;       /* 10px from the right of the container */
+  width: 40px;       /* Adjust size as needed */
+  cursor: pointer;
+  z-index: 1000;     /* Ensure it stays on top */
+}
+
+/* Shaking animation keyframes */
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 2px); }
+  50% { transform: translate(0, 0); }
+  75% { transform: translate(2px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Shake class to apply the animation */
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+
 /* Responsive styles for smaller screens */
 @media (max-width: 600px) {
     body {
