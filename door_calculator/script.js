@@ -606,6 +606,18 @@ document.getElementById('unit').addEventListener('change', function () {
     }
 });
 
+// Trigger shake animation on the bottom-right WhatsApp icon every 10 seconds
+setInterval(() => {
+  const icon = document.querySelector('.whatsapp-icon-bottom');
+  if (icon) {
+    icon.classList.add('shake');
+    // Remove the shake class after the animation duration (0.5s)
+    setTimeout(() => {
+      icon.classList.remove('shake');
+    }, 50);
+  }
+}, 1000);
+
 function toggleFaq(faqElement) {
     const answer = faqElement.nextElementSibling;
     const isExpanded = answer.style.display === "block";
