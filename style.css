@@ -159,17 +159,18 @@ h2 {
   z-index: 1000;
 }
 
-/* New Customer Support WhatsApp Icon (Bottom Right) */
+/* New WhatsApp Icon (Bottom Right) - Fixed to the viewport */
 .whatsapp-icon-bottom {
-  position: absolute;
-  bottom: 10px;      /* 10px from the bottom of the container */
-  right: 10px;       /* 10px from the right of the container */
-  width: 40px;       /* Adjust size as needed */
+  position: fixed;
+  bottom: 10px;     /* 10px from bottom of viewport */
+  right: 10px;      /* 10px from right of viewport */
+  width: 35px;      /* Reduced width for a more proportionate size */
+  height: auto;
   cursor: pointer;
-  z-index: 1000;     /* Ensure it stays on top */
+  z-index: 10000;   /* Ensure it stays above other content */
 }
 
-/* Shaking animation keyframes */
+/* Shaking animation keyframes remain unchanged */
 @keyframes shake {
   0% { transform: translate(0, 0); }
   25% { transform: translate(-2px, 2px); }
@@ -178,11 +179,10 @@ h2 {
   100% { transform: translate(0, 0); }
 }
 
-/* Shake class to apply the animation */
+/* Shake class */
 .shake {
   animation: shake 0.5s ease-in-out;
 }
-
 
 /* Responsive styles for smaller screens */
 @media (max-width: 600px) {
