@@ -264,6 +264,11 @@ const doorNetPrices = {
 
 // ---------------------- Main Calculation Logic ----------------------
 function calculateSizes() {
+     // Hide the bottom WhatsApp icon once the calculation is initiated
+    const supportIcon = document.querySelector('.whatsapp-icon-bottom');
+    if (supportIcon) {
+        supportIcon.style.display = 'none';
+    }
     const unit = document.getElementById('unit').value;
     const numWindows = parseInt(document.getElementById('numWindows').value);
     const messageArea = document.getElementById('messageArea');
