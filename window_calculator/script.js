@@ -735,6 +735,18 @@ document.getElementById('shareButton').addEventListener('click', function () {
         url: 'https://armorx-net.github.io/ArmorX-Mosquito-Nets/'
     };
 
+    // Trigger shake animation on the bottom-right WhatsApp icon every 10 seconds
+setInterval(() => {
+  const icon = document.querySelector('.whatsapp-icon-bottom');
+  if (icon) {
+    icon.classList.add('shake');
+    // Remove the shake class after the animation duration (0.5s)
+    setTimeout(() => {
+      icon.classList.remove('shake');
+    }, 50);
+  }
+}, 1000);
+
     // Check if Web Share API is supported
     if (navigator.share) {
         navigator
