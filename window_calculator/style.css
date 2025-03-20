@@ -402,6 +402,31 @@ iframe {
     margin-bottom: 15px; /* Add space below the button */
 }
 
+/* New WhatsApp Icon (Bottom Right) - Fixed to the viewport */
+.whatsapp-icon-bottom {
+  position: fixed;
+  bottom: 10px;     /* 10px from bottom of viewport */
+  right: 10px;      /* 10px from right of viewport */
+  width: 65px;      /* Reduced width for a more proportionate size */
+  height: auto;
+  cursor: pointer;
+  z-index: 10000;   /* Ensure it stays above other content */
+}
+
+/* Shaking animation keyframes remain unchanged */
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 2px); }
+  50% { transform: translate(0, 0); }
+  75% { transform: translate(2px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Shake class */
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
 /* Share Button Styles */
 #shareButton {
     display: flex;
