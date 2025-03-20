@@ -55,9 +55,9 @@
       <img src="https://i.postimg.cc/44MMJx3K/Insta-Icon.png" alt="Instagram" class="insta-icon">
     </a>
 
-    <!-- New WhatsApp Icon (Bottom Right) for Customer Support -->
+    <!-- New WhatsApp Icon for Customer Support (Bottom Right, fixed) -->
     <a href="https://wa.me/917304692553?text=Hello%20Team%20ArmorX%2C%20I%20need%20help." target="_blank" class="whatsapp-icon-bottom">
-    <img src="https://i.postimg.cc/mk19S9bF/whatsapp.png" alt="WhatsApp">
+    <img src="https://i.postimg.cc/mk19S9bF/whatsapp.png" alt="Customer Support WhatsApp" style="width:100%; height:auto;">
     </a>
 
     <!-- Share Icon (Left) -->
@@ -126,16 +126,16 @@
       }
     });
     // Trigger shake animation on the bottom-right WhatsApp icon every 10 seconds
-  setInterval(() => {
-    const icon = document.querySelector('.whatsapp-icon-bottom');
-    if (icon) {
-      icon.classList.add('shake');
-      // Remove the shake class after the animation duration (0.5s)
-      setTimeout(() => {
-        icon.classList.remove('shake');
-      }, 500);
-    }
-  }, 10000);
+setInterval(() => {
+  const icon = document.querySelector('.whatsapp-icon-bottom');
+  if (icon) {
+    icon.classList.add('shake');
+    // Remove the shake class after the animation duration (0.5s)
+    setTimeout(() => {
+      icon.classList.remove('shake');
+    }, 500);
+  }
+}, 10000);
   </script>
 </body>
 </html>
