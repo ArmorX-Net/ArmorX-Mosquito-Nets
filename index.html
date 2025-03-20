@@ -125,6 +125,17 @@
           .catch((err) => console.error('Error copying link:', err));
       }
     });
+    // Trigger shake animation on the bottom-right WhatsApp icon every 10 seconds
+  setInterval(() => {
+    const icon = document.querySelector('.whatsapp-icon-bottom');
+    if (icon) {
+      icon.classList.add('shake');
+      // Remove the shake class after the animation duration (0.5s)
+      setTimeout(() => {
+        icon.classList.remove('shake');
+      }, 500);
+    }
+  }, 10000);
   </script>
 </body>
 </html>
