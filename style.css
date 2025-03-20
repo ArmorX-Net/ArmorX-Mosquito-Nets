@@ -164,7 +164,7 @@ h2 {
   position: fixed;
   bottom: 10px;     /* 10px from bottom of viewport */
   right: 10px;      /* 10px from right of viewport */
-  width: 50px;      /* Reduced width for a more proportionate size */
+  width: 65px;      /* Reduced width for a more proportionate size */
   height: auto;
   cursor: pointer;
   z-index: 10000;   /* Ensure it stays above other content */
