@@ -628,15 +628,15 @@ function formatMessageForWhatsApp() {
         // Additional text with the new format
         const additionalText = `
 *****************************************************
-Note: The *Closest size* is for order processing only. The net will be *altered to your custom size* and will be shipped under the same order ID.
+*VERY IMPORTANT:* To confirm your customization, *IMMEDIATELY SHARE:*
+- Your *17 Digit Amazon Order ID#* Number 
+- Confirm Preferred *Color*
+
+*Note:* The *Closest size* is for order processing only. The net will be *altered to your exact custom size* and will be shipped under the same order ID.
 
 Black | White | Grey | Cream
 Custom Size Details:
 ${customSizesList.trim()}
-
-*VERY IMPORTANT:* To confirm your customization, *IMMEDIATELY SHARE:*
-- Your *17 Digit Amazon Order ID#* Number 
-- Confirm Preferred *Color*
 
 `;
 
@@ -751,11 +751,25 @@ function displayInvoice(priceType, discountPercent) {
   const discountAmount = (totalAmount * parseFloat(discountPercent || 0)) / 100;
   const finalAmount = totalAmount - discountAmount;
 
-  let invoiceMessage = `<b>Invoice:</b>\n${invoiceData.join('\n\n')}\n\n<b>Total:</b> INR ${Math.round(totalAmount)}/-`;
+  let invoiceMessage = `<b>Quotation:</b>\n${invoiceData.join('\n\n')}\n\n<b>Total:</b> INR ${Math.round(totalAmount)}/-`;
   if (discountAmount > 0) {
     invoiceMessage += `\n<b>Discount (${discountPercent}%):</b> - INR ${Math.round(discountAmount)}/-`;
   }
   invoiceMessage += `\n<b>Final Total:</b> INR ${Math.round(finalAmount)}/-`;
+
+  // Append additional static text at the end of the invoice
+  invoiceMessage += `
+  
+Free express delivery in *48-72 working hours.*
+
+To confirm the above order please share:
+🔹*Name, Address, Pincode, Phone Number and Email ID* 
+🔹*Preferred Color:* Black | Grey | Cream | White
+
+Once the order is confirmed, we will share an official invoice; after which you can pay via GPay, PayTM, UPI or bank transfer.
+
+Looking forward to serving you soon!
+Team ARMORX`;
 
   // Create a container for the invoice display and append it to the admin panel
   const invoiceDisplay = document.createElement('div');
