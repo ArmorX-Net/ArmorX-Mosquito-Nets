@@ -301,6 +301,9 @@ function generateWhatsAppLink(orderDetails, isExceeded = false) {
 
 // Main calculation logic
 function calculateSizes() {
+    // Set the flag so that the next "Format WhatsApp Message" resets quantities to 1.
+    justRecalculated = true;
+    
      // Hide the bottom WhatsApp icon once the calculation is initiated
     const supportIcon = document.querySelector('.whatsapp-icon-bottom');
     if (supportIcon) {
@@ -470,6 +473,11 @@ function toggleFaq(faqElement) {
     }
 }
 
+// Global variables
+let orderData = [];            // Populated in your calculateSizes logic
+let windowQtyValues = {};      // Stores current qty per window (keyed by window number)
+let justRecalculated = false;  // Should be set to true by your "Find Closest Matches" button
+
 // Admin Panel
 function toggleAdminInterface() {
     isAdminVisible = !isAdminVisible;
@@ -521,55 +529,41 @@ function toggleAdminInterface() {
     adminContainer.style.display = isAdminVisible ? 'block' : 'none';
 }
 
-// Function to Copy text from Admin Panel
-function copyAdminText() {
-    const adminMessageArea = document.getElementById('adminMessageArea');
-    if (adminMessageArea) {
-        const textToCopy = adminMessageArea.innerText;
-        navigator.clipboard.writeText(textToCopy)
-            .then(() => alert('Text copied to clipboard!'))
-            .catch((err) => {
-                console.error('Error copying text: ', err);
-                alert('Failed to copy text. Please try again.');
-            });
+// Helper function to update the WhatsApp Quantity based on input value
+function updateWhatsAppQty(windowNumber) {
+    const qtyInput = document.getElementById(`whatsappQty${windowNumber}`);
+    const qtyText = document.getElementById(`whatsappQtyText${windowNumber}`);
+
+    if (qtyInput && qtyText) {
+        const newQty = qtyInput.value || 1;
+        qtyText.innerText = `Select Qty: *${newQty} qty*`;
+        windowQtyValues[windowNumber] = newQty; // Update the global state
     }
 }
 
-// Function to Format Message for WhatsApp Admin Panel (Updated)
-function formatMessageForWhatsApp() {
-    const adminMessageArea = document.getElementById('adminMessageArea');
-
-    // Use the dynamically calculated orderDetails
+// New helper function to generate the plain text WhatsApp message exactly as in the old code
+function generatePlainTextWhatsAppMessage() {
     if (calculatedOrderDetails.length === 0) {
-        adminMessageArea.innerText = 'No calculated order details available. Please run the calculator first.';
+        return 'No calculated order details available. Please run the calculator first.';
     } else {
-        // Generate a simplified message format for the admin panel
+        // Generate formatted message for each window (using old formatting logic)
         const formattedMessage = calculatedOrderDetails.map((detail) => {
             const lines = detail.split('\n');
-            let windowHeader = lines[0]; // Example: "Window 1:"
+            let windowHeader = lines[0]; // e.g., "Window 1:"
             let formattedLines = [];
-
-            // Remove unnecessary match type text after the header
             if (windowHeader.includes('Closest Match Found') || windowHeader.includes('Exact Match Found')) {
-                windowHeader = windowHeader.split(':')[0] + ':';  // Keep only "Window X:"
+                windowHeader = windowHeader.split(':')[0] + ':';
             }
 
-            // Process the remaining lines for closest or exact matches
             if (lines.some(line => line.includes('Closest Match Found'))) {
                 const customSizeDetail = lines.find(line => line.startsWith('- Custom Size Needed'));
                 const customSizeInCm = lines.find(line => line.startsWith('- Custom Size in Cm'));
                 const closestSizeDetail = lines.find(line => line.startsWith('- Closest Size Ordered'));
                 const colorDetail = lines.find(line => line.startsWith('- Color'));
                 const linkDetail = lines.find(line => line.startsWith('- Link'));
-
-                // Get the window quantity from the admin input (defaulting to 1 if not found)
                 const windowNumber = parseInt(windowHeader.split(' ')[1]);
-                const qtyInput = document.getElementById(`qty${windowNumber}`);
-                const qty = qtyInput ? qtyInput.value : 1;
-
-                // Replace "Closest Size Ordered" with "Closest Size to Order"
+                const qty = windowQtyValues[windowNumber] || 1; // Use the global qty state for WhatsApp window
                 let updatedClosestSizeDetail = closestSizeDetail ? closestSizeDetail.replace('Closest Size Ordered', 'Closest Size to Order') : null;
-
                 formattedLines = [
                     windowHeader,
                     customSizeDetail,
@@ -584,16 +578,12 @@ function formatMessageForWhatsApp() {
                 const sizeDetail = lines.find(line => line.startsWith('- Size:') || line.startsWith('- Size To Order'));
                 const colorDetail = lines.find(line => line.startsWith('- Color'));
                 const linkDetail = lines.find(line => line.startsWith('- Link'));
-                const originalUnitNote = lines.find(line => line.includes('(Original:')); // Find the original unit note
-
-                // Get the window quantity from the admin input (defaulting to 1 if not found)
+                const originalUnitNote = lines.find(line => line.includes('(Original:'));
                 const windowNumber = parseInt(windowHeader.split(' ')[1]);
-                const qtyInput = document.getElementById(`qty${windowNumber}`);
-                const qty = qtyInput ? qtyInput.value : 1;
-
+                const qty = windowQtyValues[windowNumber] || 1; // Use the global qty state for WhatsApp window
                 formattedLines = [
                     windowHeader,
-                    originalUnitNote, // Include the original unit note, if available
+                    originalUnitNote,
                     sizeDetail,
                     colorDetail,
                     'CLICK HERE: To Order *Exact Size* on Amazon:',
@@ -601,11 +591,10 @@ function formatMessageForWhatsApp() {
                     `Select Qty: *${qty} qty*`
                 ];
             }
-
             return formattedLines.filter(Boolean).join('\n');
         }).join('\n\n');
 
-        // Build dynamic custom sizes list for ALL windows without "Window X:" prefix
+        // Build dynamic custom sizes list for ALL windows (without "Window X:" prefix)
         const numWindows = parseInt(document.getElementById('numWindows').value) || 0;
         let customSizesList = "";
         for (let i = 1; i <= numWindows; i++) {
@@ -616,16 +605,13 @@ function formatMessageForWhatsApp() {
             const heightVal = heightInput ? heightInput.value : "";
             const widthVal = widthInput ? widthInput.value : "";
             const unitVal = unitInput ? unitInput.value : "";
-            const qtyVal = qtyInput ? qtyInput.value : 1;
-
+            const qtyVal = qtyInput ? qtyInput.value : windowQtyValues[i] || 1; // Ensure we are using the global qty value
             if (heightVal && widthVal) {
-                // Convert measurement unit to lower case (e.g., "Feet" becomes "feet")
                 const lowerUnitVal = unitVal.toLowerCase();
                 customSizesList += `${heightVal} ${lowerUnitVal} x ${widthVal} ${lowerUnitVal} - ${qtyVal} qty\n`;
             }
         }
 
-        // Additional text with the new format
         const additionalText = `
 *****************************************************
 *VERY IMPORTANT:* To confirm your customization, *IMMEDIATELY SHARE:*
@@ -637,16 +623,265 @@ function formatMessageForWhatsApp() {
 Black | White | Grey | Cream
 Custom Size Details:
 ${customSizesList.trim()}
-
 `;
-
-        // Display the formatted message along with the additional dynamic text in the admin area
-        adminMessageArea.innerText = formattedMessage + "\n\n" + additionalText;
+        return formattedMessage + "\n\n" + additionalText;
     }
 }
 
-// Global variable holding structured order data (populate this in your calculateSizes logic)
-let orderData = [];
+// Modified copy function that offers the user a choice if both WhatsApp and Invoice messages exist.
+function copyAdminText() {
+    let invoiceDisplay = document.getElementById('invoiceDisplay');
+    let option = "1";
+    if (invoiceDisplay) {
+        option = prompt("Enter 1 to copy WhatsApp message, 2 to copy Invoice Quotation, or 3 to copy both", "1");
+    }
+    let textToCopy = "";
+    if (option === "2" && invoiceDisplay) {
+        textToCopy = invoiceDisplay.innerText;
+    } else if (option === "3" && invoiceDisplay) {
+        textToCopy = generatePlainTextWhatsAppMessage() + "\n\n" + invoiceDisplay.innerText;
+    } else {
+        textToCopy = generatePlainTextWhatsAppMessage();
+    }
+    // Use a temporary textarea to copy the text exactly
+    const tempTextArea = document.createElement('textarea');
+    tempTextArea.value = textToCopy;
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempTextArea);
+    alert('Text copied to clipboard!');
+}
+
+// Update function to ensure that the WhatsApp quantity field reflects changes
+function updateWhatsAppMessageQty(windowNumber) {
+    const qtyInput = document.getElementById(`whatsappQty${windowNumber}`);
+    const qtyText = document.getElementById(`whatsappQtyText${windowNumber}`);
+    const qty = qtyInput ? qtyInput.value : 1;
+    qtyText.innerText = `Select Qty: *${qty} qty*`;
+    windowQtyValues[windowNumber] = qty; // Update global quantity state
+}
+
+// Helper function to update the Custom Size Details block (used in the interactive UI)
+function updateCustomSizesPre() {
+    const numWindows = parseInt(document.getElementById('numWindows').value) || 0;
+    let customSizesList = [];
+    for (let i = 1; i <= numWindows; i++) {
+        let qtyVal;
+        const invoiceQtyInput = document.getElementById(`qty${i}`);
+        if (invoiceQtyInput) {
+            qtyVal = invoiceQtyInput.value;
+        } else if (windowQtyValues[i] !== undefined) {
+            qtyVal = windowQtyValues[i];
+        } else {
+            qtyVal = 1;
+        }
+        const heightInput = document.getElementById(`height${i}`);
+        const widthInput = document.getElementById(`width${i}`);
+        const unitInput = document.getElementById('unit');
+        const heightVal = heightInput ? heightInput.value : "";
+        const widthVal = widthInput ? widthInput.value : "";
+        const unitVal = unitInput ? unitInput.value : "";
+        if (heightVal && widthVal) {
+            const lowerUnitVal = unitVal.toLowerCase();
+            customSizesList.push(`${heightVal} ${lowerUnitVal} x ${widthVal} ${lowerUnitVal} - ${qtyVal} qty`);
+        }
+    }
+    const customSizesPre = document.getElementById('customSizesPre');
+    if (customSizesPre) {
+        customSizesPre.innerText = 
+`*****************************************************
+*VERY IMPORTANT:* To confirm your customization, *IMMEDIATELY SHARE:*
+- Your *17 Digit Amazon Order ID#* Number 
+- Confirm Preferred *Color*
+
+*Note:* The *Closest size* is for order processing only. The net will be *altered to your exact custom size* and will be shipped under the same order ID.
+
+Black | White | Grey | Cream
+Custom Size Details:
+${customSizesList.join('\n')}`;
+    }
+}
+
+// Function to Format Message for WhatsApp Admin Panel with interactive Qty fields (Updated Format)
+function formatMessageForWhatsApp() {
+    // If the user has just re-calculated (via "Find Closest Matches"), reset qty values to 1.
+    if (justRecalculated) {
+        const numWindows = parseInt(document.getElementById('numWindows').value) || 0;
+        for (let i = 1; i <= numWindows; i++) {
+            windowQtyValues[i] = 1;
+            let invoiceQty = document.getElementById(`qty${i}`);
+            if (invoiceQty) invoiceQty.value = 1;
+        }
+        justRecalculated = false;
+    }
+
+    const adminMessageArea = document.getElementById('adminMessageArea');
+    adminMessageArea.innerHTML = ''; // Clear previous content
+
+    if (calculatedOrderDetails.length === 0) {
+        adminMessageArea.innerText = 'No calculated order details available. Please run the calculator first.';
+    } else {
+        // Loop through each calculated order detail to create interactive elements
+        calculatedOrderDetails.forEach((detail) => {
+            const lines = detail.split('\n');
+            let windowHeader = lines[0];
+            // Remove extra match text after header if present
+            if (windowHeader.includes('Closest Match Found') || windowHeader.includes('Exact Match Found')) {
+                windowHeader = windowHeader.split(':')[0] + ':';
+            }
+            // Extract window number (assumes header format "Window X:")
+            const windowNumber = parseInt(windowHeader.split(' ')[1]);
+
+            // Determine current quantity: if an invoice qty exists or a stored value, use it; otherwise default to 1.
+            let currentQty;
+            const invoiceQtyInput = document.getElementById(`qty${windowNumber}`);
+            if (invoiceQtyInput) {
+                currentQty = invoiceQtyInput.value;
+            } else if (windowQtyValues[windowNumber] !== undefined) {
+                currentQty = windowQtyValues[windowNumber];
+            } else {
+                currentQty = 1;
+            }
+
+            // Create a container for this window’s detail
+            const windowDiv = document.createElement('div');
+            windowDiv.className = 'window-detail';
+            windowDiv.style.margin = '0';
+
+            // Add header (e.g., "Window 1:")
+            const headerEl = document.createElement('p');
+            headerEl.innerText = windowHeader;
+            headerEl.style.margin = '0';
+            windowDiv.appendChild(headerEl);
+
+            // Process details for Closest Match
+            if (lines.some(line => line.includes('Closest Match Found'))) {
+                const customSizeDetail = lines.find(line => line.startsWith('- Custom Size Needed'));
+                const customSizeInCm = lines.find(line => line.startsWith('- Custom Size in Cm'));
+                const closestSizeDetail = lines.find(line => line.startsWith('- Closest Size Ordered'));
+                const colorDetail = lines.find(line => line.startsWith('- Color'));
+                const linkDetail = lines.find(line => line.startsWith('- Link'));
+                
+                if (customSizeDetail) { 
+                    let p = document.createElement('p'); 
+                    p.innerText = customSizeDetail;
+                    p.style.margin = '0';
+                    windowDiv.appendChild(p); 
+                }
+                if (customSizeInCm) { 
+                    let p = document.createElement('p'); 
+                    p.innerText = customSizeInCm;
+                    p.style.margin = '0';
+                    windowDiv.appendChild(p); 
+                }
+                if (closestSizeDetail) { 
+                    let updatedClosestSizeDetail = closestSizeDetail.replace('Closest Size Ordered', 'Closest Size to Order');
+                    let p = document.createElement('p'); 
+                    p.innerText = updatedClosestSizeDetail;
+                    p.style.margin = '0';
+                    windowDiv.appendChild(p); 
+                }
+                if (colorDetail) { 
+                    let p = document.createElement('p'); 
+                    p.innerText = colorDetail;
+                    p.style.margin = '0';
+                    windowDiv.appendChild(p); 
+                }
+                let orderLinkText = document.createElement('p');
+                orderLinkText.innerText = 'CLICK HERE: To Order *Closest Size* on Amazon:';
+                orderLinkText.style.margin = '0';
+                windowDiv.appendChild(orderLinkText);
+                if (linkDetail) { 
+                    let p = document.createElement('p'); 
+                    p.innerText = linkDetail;
+                    p.style.margin = '0';
+                    windowDiv.appendChild(p); 
+                }
+            } 
+            // Process details for Exact Match
+            else if (lines.some(line => line.includes('Exact Match Found'))) {
+                const sizeDetail = lines.find(line => line.startsWith('- Size:') || line.startsWith('- Size To Order'));
+                const colorDetail = lines.find(line => line.startsWith('- Color'));
+                const linkDetail = lines.find(line => line.startsWith('- Link'));
+                const originalUnitNote = lines.find(line => line.includes('(Original:'));
+                
+                if (originalUnitNote) { 
+                    let p = document.createElement('p'); 
+                    p.innerText = originalUnitNote;
+                    p.style.margin = '0';
+                    windowDiv.appendChild(p); 
+                }
+                if (sizeDetail) { 
+                    let p = document.createElement('p'); 
+                    p.innerText = sizeDetail;
+                    p.style.margin = '0';
+                    windowDiv.appendChild(p); 
+                }
+                if (colorDetail) { 
+                    let p = document.createElement('p'); 
+                    p.innerText = colorDetail;
+                    p.style.margin = '0';
+                    windowDiv.appendChild(p); 
+                }
+                let orderLinkText = document.createElement('p');
+                orderLinkText.innerText = 'CLICK HERE: To Order *Exact Size* on Amazon:';
+                orderLinkText.style.margin = '0';
+                windowDiv.appendChild(orderLinkText);
+                if (linkDetail) { 
+                    let p = document.createElement('p'); 
+                    p.innerText = linkDetail;
+                    p.style.margin = '0';
+                    windowDiv.appendChild(p); 
+                }
+            }
+            
+            // --- Add Qty line with both text and input box ---
+            const qtyLine = document.createElement('div');
+            qtyLine.style.display = 'flex';
+            qtyLine.style.alignItems = 'center';
+            qtyLine.style.margin = '0';
+
+            // Create the text element showing the qty value (to be copied)
+            const qtyText = document.createElement('span');
+            qtyText.id = `whatsappQtyText${windowNumber}`;
+            qtyText.innerText = `Select Qty: *${currentQty} qty*`;
+            qtyLine.appendChild(qtyText);
+
+            // Create the input field for updating qty
+            const qtyInput = document.createElement('input');
+            qtyInput.type = 'number';
+            qtyInput.id = `whatsappQty${windowNumber}`;
+            qtyInput.min = 1;
+            qtyInput.value = currentQty;
+            qtyInput.style.width = '50px';
+            qtyInput.style.marginLeft = '10px';
+            qtyInput.addEventListener('input', function() {
+                const newQty = qtyInput.value;
+                const invoiceInput = document.getElementById(`qty${windowNumber}`);
+                if (invoiceInput) {
+                    invoiceInput.value = newQty;
+                }
+                qtyText.innerText = `Select Qty: *${newQty} qty*`;
+                windowQtyValues[windowNumber] = newQty;
+                updateCustomSizesPre();
+            });
+            qtyLine.appendChild(qtyInput);
+            windowDiv.appendChild(qtyLine);
+
+            // Append this window’s details to the admin message area without extra line breaks
+            adminMessageArea.appendChild(windowDiv);
+        });
+
+        // --- Append additional text for Custom Size Details ---
+        const additionalPre = document.createElement('pre');
+        additionalPre.id = 'customSizesPre';
+        additionalPre.style.margin = '0';
+        additionalPre.style.whiteSpace = 'pre-wrap';
+        adminMessageArea.appendChild(additionalPre);
+        updateCustomSizesPre();
+    }
+}
 
 // --- ADMIN PANEL: Invoice Generation Functions (Updated GUI with Quantity) ---
 
@@ -665,14 +900,12 @@ function generateInvoice() {
   if (!invoiceContainer) {
     invoiceContainer = document.createElement('div');
     invoiceContainer.id = 'invoiceControls';
-    // Arrange controls vertically with a gap
     invoiceContainer.style.display = 'flex';
     invoiceContainer.style.flexDirection = 'column';
     invoiceContainer.style.gap = '10px';
     invoiceContainer.style.marginBottom = '20px';
     adminMessageArea.appendChild(invoiceContainer);
   } else {
-    // Clear existing controls to rebuild them
     invoiceContainer.innerHTML = '';
   }
 
@@ -703,10 +936,24 @@ function generateInvoice() {
   qtyContainer.style.gap = '5px';
   qtyContainer.style.marginBottom = '10px';
 
-  // For each window in orderData, add a quantity input (default = 1)
+  // For each window in orderData, add a quantity input (default = current value if available)
   orderData.forEach((item) => {
     let qtyDiv = document.createElement('div');
-    qtyDiv.innerHTML = `Window ${item.windowNumber} Quantity: <input type="number" id="qty${item.windowNumber}" value="1" min="1" style="width:50px;">`;
+    const currentQty = (windowQtyValues[item.windowNumber] !== undefined) ? windowQtyValues[item.windowNumber] : 1;
+    qtyDiv.innerHTML = `Window ${item.windowNumber} Quantity: <input type="number" id="qty${item.windowNumber}" value="${currentQty}" min="1" style="width:50px;">`;
+    const qtyInput = qtyDiv.querySelector('input');
+    qtyInput.addEventListener('input', function() {
+        let whatsappInput = document.getElementById(`whatsappQty${item.windowNumber}`);
+        if (whatsappInput) {
+            whatsappInput.value = qtyInput.value;
+            const whatsappText = document.getElementById(`whatsappQtyText${item.windowNumber}`);
+            if (whatsappText) {
+                whatsappText.innerText = `Select Qty: *${qtyInput.value} qty*`;
+            }
+        }
+        windowQtyValues[item.windowNumber] = qtyInput.value;
+        updateCustomSizesPre();
+    });
     qtyContainer.appendChild(qtyDiv);
   });
   invoiceContainer.appendChild(qtyContainer);
@@ -716,12 +963,10 @@ function generateInvoice() {
   generateBtn.className = 'admin-button';
   generateBtn.innerText = 'Generate Invoice';
   generateBtn.addEventListener('click', () => {
-    // Remove any previous invoice display
     const existingInvoice = document.getElementById('invoiceDisplay');
     if (existingInvoice) {
       existingInvoice.remove();
     }
-    // Generate and display the invoice using the current selections
     displayInvoice(priceSelection.value, discountInput.value);
   });
   invoiceContainer.appendChild(generateBtn);
@@ -734,33 +979,28 @@ function displayInvoice(priceType, discountPercent) {
 
   // Iterate over each net order stored in the global orderData array
   orderData.forEach(item => {
-    // Retrieve the quantity from the corresponding input field (default to 1 if missing)
     let qtyInput = document.getElementById(`qty${item.windowNumber}`);
     let qty = qtyInput ? parseInt(qtyInput.value) : 1;
-    // Retrieve the price from the JSON record using the selected price type
     const price = parseFloat(item.priceRecord[priceType]);
     const windowTotal = price * qty;
     totalAmount += windowTotal;
-    // Format the invoice line for this window (rounding all numbers to the nearest integer)
     invoiceData.push(
       `Window ${item.windowNumber}\nSize: ${item.size} - ${qty} qty\nPrice: INR ${Math.round(price)}/- x ${qty} = INR ${Math.round(windowTotal)}/-`
     );
   });
 
-  // Compute discount and final total, then round them to integers
   const discountAmount = (totalAmount * parseFloat(discountPercent || 0)) / 100;
   const finalAmount = totalAmount - discountAmount;
 
-  let invoiceMessage = `<b>Quotation:</b>\n${invoiceData.join('\n\n')}\n\n<b>Total:</b> INR ${Math.round(totalAmount)}/-`;
+  let invoiceMessage = `<b>*QUOTATION:*</b>\n${invoiceData.join('\n\n')}\n\n<b>Total:</b> INR ${Math.round(totalAmount)}/-`;
   if (discountAmount > 0) {
     invoiceMessage += `\n<b>Discount (${discountPercent}%):</b> - INR ${Math.round(discountAmount)}/-`;
   }
   invoiceMessage += `\n<b>Final Total:</b> INR ${Math.round(finalAmount)}/-`;
 
-  // Append additional static text at the end of the invoice
   invoiceMessage += `
-  
-Free express delivery in *48-72 working hours.*
+
+Free express delivery in *48-72 working hours.*  
 
 To confirm the above order please share:
 🔹*Name, Address, Pincode, Phone Number and Email ID* 
@@ -771,7 +1011,6 @@ Once the order is confirmed, we will share an official invoice; after which you 
 Looking forward to serving you soon!
 Team ARMORX`;
 
-  // Create a container for the invoice display and append it to the admin panel
   const invoiceDisplay = document.createElement('div');
   invoiceDisplay.id = 'invoiceDisplay';
   invoiceDisplay.style.marginTop = '20px';
