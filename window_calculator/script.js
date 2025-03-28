@@ -614,14 +614,14 @@ function generatePlainTextWhatsAppMessage() {
 
         const additionalText = `
 *****************************************************
-*VERY IMPORTANT:* To confirm your customization, *IMMEDIATELY SHARE:*
+*VERY IMPORTANT:* To Get your custom size, after placing your Order on Amazon *IMMEDIATELY SHARE:*
 - Your *17 Digit Amazon Order ID#* Number 
 - Confirm Preferred *Color*
 
-*Note:* The *Closest size* is for order processing only. The net will be *altered to your exact custom size* and will be shipped under the same order ID.
+*Note:* The *Closest size* is for order processing only. The net will be *altered to your exact custom size* and will be shipped under the same order ID
 
-Black | White | Grey | Cream
 Custom Size Details:
+Black | White | Grey | Cream
 ${customSizesList.trim()}
 `;
         return formattedMessage + "\n\n" + additionalText;
@@ -691,14 +691,14 @@ function updateCustomSizesPre() {
     if (customSizesPre) {
         customSizesPre.innerText = 
 `*****************************************************
-*VERY IMPORTANT:* To confirm your customization, *IMMEDIATELY SHARE:*
+*VERY IMPORTANT:* To Get your custom size, after placing your Order on Amazon *IMMEDIATELY SHARE:*
 - Your *17 Digit Amazon Order ID#* Number 
 - Confirm Preferred *Color*
 
-*Note:* The *Closest size* is for order processing only. The net will be *altered to your exact custom size* and will be shipped under the same order ID.
+*Note:* The *Closest size* is for order processing only. The net will be *altered to your exact custom size* and will be shipped under the same order ID
 
-Black | White | Grey | Cream
 Custom Size Details:
+Black | White | Grey | Cream
 ${customSizesList.join('\n')}`;
     }
 }
