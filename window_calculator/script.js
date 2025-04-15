@@ -1000,6 +1000,8 @@ function displayInvoice(priceType, discountPercent) {
 
   invoiceMessage += `
 
+REP CODE: 
+
 Free express delivery in *48-72 working hours.*  
 
 To confirm the above order please share:
