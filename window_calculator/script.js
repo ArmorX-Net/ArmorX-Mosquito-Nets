@@ -978,17 +978,30 @@ function displayInvoice(priceType, discountPercent) {
   let totalAmount = 0;
 
   // Iterate over each net order stored in the global orderData array
-  orderData.forEach(item => {
-    let qtyInput = document.getElementById(`qty${item.windowNumber}`);
-    let qty = qtyInput ? parseInt(qtyInput.value) : 1;
-    const price = parseFloat(item.priceRecord[priceType]);
-    const windowTotal = price * qty;
-    totalAmount += windowTotal;
-    invoiceData.push(
-      `Window ${item.windowNumber}\nSize: ${item.size} - ${qty} qty\nPrice: INR ${Math.round(price)}/- x ${qty} = INR ${Math.round(windowTotal)}/-`
-    );
-  });
+orderData.forEach(item => {
+  let qtyInput = document.getElementById(`qty${item.windowNumber}`);
+  let qty = qtyInput ? parseInt(qtyInput.value) : 1;
 
+  const price = parseFloat(item.priceRecord[priceType]);
+  const windowTotal = price * qty;
+  totalAmount += windowTotal;
+
+  // Format size to show unit after both width and height
+  let formattedSize = item.size;
+
+  const sizeParts = item.size.split(' ');
+  if (sizeParts.length >= 4) {
+    const height = sizeParts[0];
+    const width = sizeParts[2];
+    const unit = sizeParts[3];
+
+    formattedSize = `${height} ${unit} x ${width} ${unit}`;
+  }
+
+  invoiceData.push(
+    `Window ${item.windowNumber}\nSize: ${formattedSize} - ${qty} qty\nPrice: INR ${Math.round(price)}/- x ${qty} = INR ${Math.round(windowTotal)}/-`
+  );
+});
   const discountAmount = (totalAmount * parseFloat(discountPercent || 0)) / 100;
   const finalAmount = totalAmount - discountAmount;
 
@@ -1056,3 +1069,4 @@ setInterval(() => {
             .catch((err) => console.error('Error copying link:', err));
     }
 });
+
