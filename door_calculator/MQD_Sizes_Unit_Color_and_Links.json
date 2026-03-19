@@ -1486,5 +1486,29 @@
         "Unit": "cm",
         "Color": "Black",
         "Amazon Link": "https://www.amazon.in/dp/B0DS65TLG8/"
+    },
+    {
+        "Height(H)": 220,
+        "Width(W)": 120,
+        "Size(HxW)": "220x120",
+        "Unit": "cm",
+        "Color": "Grey",
+        "Amazon Link": "https://www.amazon.in/dp/B0FTS6GJHQ/"
+    },
+    {
+        "Height(H)": 220,
+        "Width(W)": 120,
+        "Size(HxW)": "220x120",
+        "Unit": "cm",
+        "Color": "Brown",
+        "Amazon Link": "https://www.amazon.in/dp/B0FTS5XC9R/"
+    },
+    {
+        "Height(H)": 220,
+        "Width(W)": 120,
+        "Size(HxW)": "220x120",
+        "Unit": "cm",
+        "Color": "Black",
+        "Amazon Link": "https://www.amazon.in/dp/B0FTRCDYGH/"
     }
 ]
