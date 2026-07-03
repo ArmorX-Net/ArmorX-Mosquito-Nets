@@ -180,8 +180,8 @@ function formatExactMatch(i, match, originalHeight, originalWidth, unit, color) 
 function formatClosestMatch(i, closestMatch, originalHeight, originalWidth, convertedSize, unit, color) {
     const [convertedHeight, convertedWidth] = convertedSize.split(' x ').map(parseFloat);
     const exceedsLimit = !(
-        (convertedWidth <= 117 && convertedHeight <= 217) || 
-        (convertedWidth <= 217 && convertedHeight <= 117)
+        (convertedWidth <= 123 && convertedHeight <= 223) || 
+        (convertedWidth <= 223 && convertedHeight <= 123)
     );
 
     if (exceedsLimit) {
@@ -309,8 +309,8 @@ ${note}`);
         }
 
         const exceedsLimit = !(
-            (widthCm <= 117 && heightCm <= 217) ||
-            (widthCm <= 217 && heightCm <= 117)
+            (widthCm <= 123 && heightCm <= 223) ||
+            (widthCm <= 223 && heightCm <= 123)
         );
         if (exceedsLimit) {
             isExceeded = true;
